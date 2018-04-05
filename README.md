@@ -1,2 +1,3 @@
 # Rack
-To better visualize server racks in d3. Json data gives the info about rack servers. The code is helping a user to better visualize rack server and its internals for the allprobe project.
+To better visualize server racks in d3.
+Json data gives the info about rack servers. The code is helping a user to better visualize rack server and its internals.

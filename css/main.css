@@ -116,17 +116,74 @@ textarea {
     border-left: 1px solid black;
 }
 
+.server {
+    width: 50px;
+    height: 30px;
+    background-color: violet;
+}
 
+.rack_container {
+    width: 402px;
+    height: 767px;
+    border: 1px solid black;
+    border-radius: 5px;
+}
 
+.rack_top {
+    width: 100%;
+    height: 30px;
+}
+.rack_top_corner_rect {
+    width: 30px;
+    height: 30px;
+    background-color: #979797;
+    border-bottom: 1px solid black;
+    float: left;
+}
 
+.rack_top_middle_rect {
+    width: 340px;
+    height: 30px;
+    border: 1px solid black;
+    border-top: none;
+    float: left;
+    background-color: #898989;
+}
+.rack_body {
+    width: 100%;
+    height: 737px;
+}
 
+.first {
+    height: 26px !important;
+}
 
+.single_rack {
+    height: 28px;
+    width: 100%;
+    background-color: #cfcfcf;
+    border-bottom: 1px solid #8b8b8b;
+}
 
+.single_rack_corner {
+    width: 40px;
+    height: 27px;
+    background-color: #959595;
+    float: left;
+}
 
+.single_rack_middle_section {
 
+    width: 320px;
+    height: 27px;
+    border: 1px solid #cfcfcf;
+    border-top: none;
+    float: left;
+}
 
-
-
+.right {
+    float: right;
+}
 
 
 
