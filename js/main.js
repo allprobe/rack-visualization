@@ -1,3 +1,24 @@
+$(function() {
+    
+    var jsonData = {
+        hosts: [
+            {
+                ip: '10.02.100',
+                name: "allprobe",
+                type: "san",
+                status: "okay",
+            },
+            {
+                ip: '10.02.102',
+                name: "cdn.allprobe",
+                type: "cdn",
+                status: "okay",
+            }
+        ]
+    };
+});
+
+
 /*$(function() {
     
     var svgContainer = d3.select(".rack_display")
