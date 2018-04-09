@@ -1,6 +1,7 @@
 $(function() {
     
     var jsonData = {
+        rack_size: 40,
         hosts: [
             {
                 ip: '10.02.100',
