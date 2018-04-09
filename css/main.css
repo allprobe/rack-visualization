@@ -159,7 +159,6 @@ textarea {
 
 .rack-container-div {
     width: 80%;
-    height: 300px;
     position: absolute;
     left: 40px
 }
@@ -195,7 +194,22 @@ textarea {
     float: right;
 }
 
+.individual-server {
+    width: 100%;
+    height: 13px;
+    background-color: brown;
+    border-bottom: 1px solid white;
+    position: relative;
+}
 
+.switch {
+    width: 10px;
+    height: 8px;
+    position: absolute;
+    left: 250px;
+    top: 1px;
+    background-color: greenyellow;
+}
 
 /* ==========================================================================
    Helper classes

@@ -8,15 +8,55 @@ $(function() {
                 name: "allprobe",
                 type: "san",
                 status: "okay",
+                u: 1,
             },
             {
                 ip: '10.02.102',
                 name: "cdn.allprobe",
                 type: "cdn",
                 status: "okay",
-            }
+                u: 1
+            },
+            {
+                ip: '10.02.100',
+                name: "allprobe",
+                type: "san",
+                status: "okay",
+                u: 3
+            },
+
+            {
+                ip: '10.02.100',
+                name: "allprobe",
+                type: "san",
+                status: "okay",
+                u: 4
+            },
+
+            {
+                ip: '10.02.100',
+                name: "allprobe",
+                type: "san",
+                status: "okay",
+                u: 5
+            },
         ]
     };
+
+    $.each(jsonData.hosts, function(index, value) {
+        
+        console.log(value);
+        var div =
+        $(".rack-container-div").append(
+            $("<div></div>").addClass("individual-server")
+            .css("height", (value.u * 13) + "px").append(
+                $("<div></div>").addClass("switch")
+                
+            )
+        );
+                    
+    });
+
 });
 
 
