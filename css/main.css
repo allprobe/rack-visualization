@@ -126,7 +126,7 @@ textarea {
     width: 402px;
     height: auto;
     border: 1px solid black;
-    border-radius: 5px;
+    
 }
 
 .rack_top {
@@ -152,15 +152,38 @@ textarea {
 }
 
 .rack_body {
+    padding-top: 1px;
     width: 100%;
-    height: auto;
+    min-height: 30px;
     position: relative;
+    background-color: #898989;
 }
 
 .rack-container-div {
     width: 80%;
     position: absolute;
     left: 40px
+}
+
+.rack_body_left {
+    width: 20%;
+    float: left;
+    min-height: 13px;
+    background-color: #898989;
+}
+
+.rack_body_middle {
+    width: 80%;
+    min-height: 13px;
+    
+}
+
+.rack_body_right {
+
+    width: 20%;
+    float: right;
+    min-height: 13px;
+    background-color: #898989;
 }
 
 .first {
@@ -195,11 +218,29 @@ textarea {
 }
 
 .individual-server {
-    width: 100%;
+    
     height: 13px;
-    background-color: brown;
     border-bottom: 1px solid white;
     position: relative;
+}
+
+.individual-server-first {
+    width: 10%;
+    height: 100%;
+    float: left;
+}
+
+.individual-server-second {
+    width: 80%;
+    height: 100%;
+    float: left;
+    background-color: brown;
+}
+
+.individual-server-third {
+    width: 10%;
+    height: 100%;
+    float: left;
 }
 
 .switch {

@@ -41,7 +41,7 @@ $(function() {
                 u: 5
             },
 
-            {
+            /*{
                 ip: '10.02.100',
                 name: "allprobe",
                 type: "san",
@@ -76,17 +76,18 @@ $(function() {
                 type: "san",
                 status: "okay",
                 u: 3
-            },
+            },*/
             
         ]
     };
-     var height = 0;
+     
+    var height = 0;
     $.each(jsonData.hosts, function(index, value) {
         
         console.log(value);
         var div =
-        $(".rack-container-div").append(
-            $("<div></div>").addClass("individual-server")
+        $(".rack_body").append(
+            $("<div><div class='individual-server-first'></div><div class='individual-server-second'></div><div class='individual-server-third'></div></div>").addClass("individual-server")
             .css("height", (value.u * 13) + "px").append(
                 $("<div></div>").addClass("switch")
                 
@@ -100,14 +101,14 @@ $(function() {
     var times = Math.round((height - 60) / 13);
     height = height + jsonData.hosts.length;
 
-    $(".rack_body").css("height", height + "px");
+    //$(".rack_body").css("height", height + "px");
 
     
     console.log(times);
     var single_rack = $(".single_rack").clone();
     for(var i = 0; i < times; i++) {
-        $('.rack_body').append(single_rack);
-        single_rack = single_rack.clone();
+        //$('.rack_body').append(single_rack);
+        //single_rack = single_rack.clone();
         console.log(i);
     }
 
