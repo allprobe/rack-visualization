@@ -228,6 +228,10 @@ textarea {
     width: 10%;
     height: 100%;
     float: left;
+    text-align: center;
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
 }
 
 .individual-server-second {
@@ -235,6 +239,10 @@ textarea {
     height: 100%;
     float: left;
     background-color: brown;
+    text-align: center;
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
 }
 
 .individual-server-third {
