@@ -234,6 +234,12 @@ textarea {
     flex-direction: column;
 }
 
+.individual-server-first-child {
+    width: 100%;
+    height: 19px;
+    border-bottom: 1px solid white;
+}
+
 .individual-server-second {
     width: 80%;
     height: 100%;

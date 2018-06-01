@@ -27,14 +27,26 @@ $(function() {
     var unitHeight = 20;
     var height = 0;
     var div;
-    
+    var running = 1;
     $.each(jsonData.hosts, function(index, value) {
         
+        var hString = "";
+
+        for(var i = 0; i < value.size; i++) {
+            if((i + 1) === value.size) {
+                hString = hString + "<div class='individual-server-first-child' style='border-bottom:none'>" + running + "</div>";
+            } else {
+                hString = hString + "<div class='individual-server-first-child'>" + running + "</div>";
+            }
+            
+            running = running + 1; 
+        }
+
         div =
         $(".rack_body")
         .append(
             $( "<div>" + 
-                    "<div class='individual-server-first'>" + (index + 1) + "</div>" +
+                    "<div class='individual-server-first'>" + hString + "</div>" +
                     "<div class='individual-server-second'>" + 
                         "<span>"+ value.name + "</span>" + 
                     "</div>" +
@@ -45,6 +57,8 @@ $(function() {
             .attr("index", index)
             .css("height", (value.size * unitHeight) + "px")
         );
+
+        
                     
     });
 
