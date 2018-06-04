@@ -7,9 +7,9 @@ $(function() {
         "hosts":[
             {"name":"SRV18","size":1,"bucket":"Virtual Platforms Grid-2","ip":"62.90.132.135","events":""},
             {"name":"DEBIAN-FREE-3TB","size":1,"bucket":"ADCD core","ip":"62.90.132.132","events":""},
-            {"name":"SRV20","size":1,"bucket":"Virtual Platforms Grid-2","ip":"62.90.132.151","events":""},
-            {"name":"LAN - SWITCH","size":1,"bucket":"ADCD core","ip":"127.0.0.1","events":""},
-            {"name":"GW-1","size":1,"bucket":"ADCD core","ip":"62.90.132.12","events":""},
+            {"name":"SRV20","size":2,"bucket":"Virtual Platforms Grid-2","ip":"62.90.132.151","events":""},
+            {"name":"LAN - SWITCH","size":3,"bucket":"ADCD core","ip":"127.0.0.1","events":""},
+            {"name":"GW-1","size":4,"bucket":"ADCD core","ip":"62.90.132.12","events":""},
             {"name":"WAN - SWITCH","size":1,"bucket":"ADCD core","ip":"127.0.0.1","events":""},
             {"name":"NFS storage","size":1,"bucket":"ADCD core","ip":"192.168.0.70","events":""},
             {"name":"APR-CAS1","size":1,"bucket":"AllProbe Cassandra","ip":"192.168.0.181","events":""},
@@ -28,6 +28,7 @@ $(function() {
     var height = 0;
     var div;
     var running = 1;
+    console.log("All data", jsonData.hosts);
     $.each(jsonData.hosts, function(index, value) {
         
         var hString = "";
@@ -58,7 +59,7 @@ $(function() {
             .css("height", (value.size * unitHeight) + "px")
         );
 
-        
+        console.log(value, index);
                     
     });
 
