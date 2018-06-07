@@ -5,31 +5,42 @@ $(function() {
         "name":"M-02 \/ 1x",
         "size":"42",
         "hosts":[
-            {"name":"SRV18","size":1,"bucket":"Virtual Platforms Grid-2","ip":"62.90.132.135","events":""},
-            {"name":"DEBIAN-FREE-3TB","size":1,"bucket":"ADCD core","ip":"62.90.132.132","events":""},
-            {"name":"SRV20","size":2,"bucket":"Virtual Platforms Grid-2","ip":"62.90.132.151","events":""},
-            {"name":"LAN - SWITCH","size":3,"bucket":"ADCD core","ip":"127.0.0.1","events":""},
-            {"name":"GW-1","size":4,"bucket":"ADCD core","ip":"62.90.132.12","events":""},
-            {"name":"WAN - SWITCH","size":1,"bucket":"ADCD core","ip":"127.0.0.1","events":""},
-            {"name":"NFS storage","size":1,"bucket":"ADCD core","ip":"192.168.0.70","events":""},
-            {"name":"APR-CAS1","size":1,"bucket":"AllProbe Cassandra","ip":"192.168.0.181","events":""},
-            {"name":"SRV27","size":1,"bucket":"Virtual Platforms Grid-2","ip":"62.90.132.23","events":""},
-            {"name":"GW-2","size":1,"bucket":"ADCD core","ip":"62.90.132.21","events":""},
-            {"name":"HA-PROXY1","size":1,"bucket":"ADCD core","ip":"62.90.132.15","events":""},
-            {"name":"APR-CAS2","size":1,"bucket":"AllProbe Cassandra","ip":"192.168.0.182","events":""},
-            {"name":"SRV28","size":4,"bucket":"Virtual Platforms Grid-2","ip":"62.90.132.10","events":""},
-            {"name":"APR-CAS3","size":1,"bucket":"AllProbe Cassandra","ip":"192.168.0.183","events":""},
-            {"name":"SRV23","size":1,"bucket":"Virtual Platform - SELF (grid2)","ip":"62.90.132.174","events":""},
-            {"name":"SRV29","size":6,"bucket":"Virtual Platforms Grid-2","ip":"62.90.132.140","events":""}
+            {"name":"SRV18","size":1,"bucket":"Virtual Platforms Grid-1","ip":"62.90.132.135","events":"","submenu":"ONCLICK SUBMENU CONTENT","pos":"20"},
+            {"name":"SRV20","size":3,"bucket":"Virtual Platforms Grid-1","ip":"62.90.132.151","events":"","submenu":"ONCLICK SUBMENU CONTENT","pos":"0"},
+            {"name":"SRV27","size":1,"bucket":"Virtual Platforms Grid-1","ip":"62.90.132.23","events":"","submenu":"ONCLICK SUBMENU CONTENT","pos":"14"},
+            {"name":"SRV28","size":1,"bucket":"Virtual Platforms Grid-1","ip":"62.90.132.10","events":"","submenu":"ONCLICK SUBMENU CONTENT","pos":"10"},
+            {"name":"SRV23","size":1,"bucket":"Virtual Platforms Grid-1","ip":"62.90.132.174","events":"","submenu":"ONCLICK SUBMENU CONTENT","pos":"1"},
+            {"name":"SRV29","size":1,"bucket":"Virtual Platforms Grid-1","ip":"62.90.132.140","events":"","submenu":"ONCLICK SUBMENU CONTENT","pos":"0"}
         ]
     };
 
     var unitHeight = 20;
+    var maxLength = 42;
     var height = 0;
     var div;
     var running = 1;
-    console.log("All data", jsonData.hosts);
-    $.each(jsonData.hosts, function(index, value) {
+    var hosts = jsonData.hosts;
+    var dummy = {"name": "", size: 1};
+
+    $.each(hosts, function(index, host) {
+        host.pos = parseInt(host.pos);
+    });
+
+    hosts.sort(function(a, b) {
+        return a.pos - b.pos;
+    });
+
+    var i = 1;
+
+    while(i <= 42) {
+
+        
+    }
+
+    console.log("All data", hosts);
+
+
+    $.each(hosts, function(index, value) {
         
         var hString = "";
 
@@ -62,6 +73,29 @@ $(function() {
         console.log(value, index);
                     
     });
+
+    if( jsonData.hosts.length < maxLength) {
+        var begin = jsonData.hosts.length;
+        while(running <= maxLength) {
+
+            div =
+            $(".rack_body")
+            .append(
+                $( "<div>" + 
+                        "<div class='individual-server-first'>" + running + "</div>" +
+                        "<div class='individual-server-second'>" + 
+                            "<span>" + "</span>" + 
+                        "</div>" +
+                        "<div class='individual-server-third'></div>" + 
+                    "</div>" 
+                )
+                .addClass("individual-server")
+                .attr("index", begin)
+                .css("height", (unitHeight) + "px")
+            );
+            running = running + 1;
+        }
+    }
 
 });
 
