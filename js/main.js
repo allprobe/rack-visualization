@@ -1,5 +1,8 @@
 $(function() {
-    
+    // Idea.
+    // From the main data, split the data to two parts; 1) All the data with pos 0 and 2) All the data with pos != 0 AND SORT
+    // Then create a new array with size 42, arrange the data just like the rack.
+
     var jsonData = 
     {
         "name":"M-02 \/ 1x",
@@ -23,8 +26,21 @@ $(function() {
     var hosts = jsonData.hosts;
     var dummy = {"name": "", size: 1};
 
+    zeroPosHosts = [];
+    nonZeroPosHosts = [];
+    wholeHosts = [];
+
     $.each(hosts, function(index, host) {
         host.pos = parseInt(host.pos);
+        if(host.pos === 0) {
+            zeroPosHosts.push(host);
+        } else if( host.pos > 0 ) {
+            nonZeroPosHosts.push(host);
+        }
+    });
+
+    nonZeroPosHosts.sort(function(a, b) {
+        return a.pos - b.pos;
     });
 
     hosts.sort(function(a, b) {
@@ -32,24 +48,46 @@ $(function() {
     });
 
     var i = 1;
+    var dummyData = {"name":"","size":1,"bucket":"","ip":"","events":"","submenu":"","pos": null};
+    
+    while(i <= 42) {
+        if(nonZeroPosHosts[0]) {
+            if(nonZeroPosHosts[0].pos === i) {
+                wholeHosts[i - 1] = $.extend({}, nonZeroPosHosts[0]);
+                i = i + 1;
+                nonZeroPosHosts.shift();
+                continue;
+            }
+        } 
 
-    /*while(i <= 42) {
+        if(zeroPosHosts[0]) {
+            wholeHosts[i - 1] = $.extend({}, zeroPosHosts[0]);
+            i = i + zeroPosHosts[0].size;
+            zeroPosHosts.shift();
+            continue;
+        }
 
-        
-    }*/
+        // 
 
-    console.log("All data", hosts);
+        wholeHosts[i - 1] = dummyData;
 
+        i = i + 1;
+    }
 
-    $.each(hosts, function(index, value) {
+    console.log("All data", wholeHosts);
+    //wholeHosts.shift();
+    //wholeHosts.reverse();
+    $.each(wholeHosts, function(index, value) {
+        if(value) {
+
         
         var hString = "";
 
         for(var i = 0; i < value.size; i++) {
             if((i + 1) === value.size) {
-                hString = hString + "<div class='individual-server-first-child' style='border-bottom:none'>" + (reverseL - running) + "</div>";
+                hString = "<div class='individual-server-first-child' style='border-bottom:none'>" + (running) + "</div>" + hString;
             } else {
-                hString = hString + "<div class='individual-server-first-child'>" + (reverseL - running) + "</div>";
+                hString = "<div class='individual-server-first-child'>" + (running) + "</div>" + hString;
             }
             
             running = running + 1; 
@@ -57,7 +95,7 @@ $(function() {
 
         div =
         $(".rack_body")
-        .append(
+        .prepend(
             $( "<div>" + 
                     "<div class='individual-server-first'>" + hString + "</div>" +
                     "<div class='individual-server-second'>" + 
@@ -70,12 +108,13 @@ $(function() {
             .attr("index", index)
             .css("height", (value.size * unitHeight) + "px")
         );
-
+    }
         console.log(value, index);
                     
     });
 
-    if( jsonData.hosts.length < maxLength) {
+    /*if( jsonData.hosts.length < maxLength) {
+        
         var begin = jsonData.hosts.length;
         while(running <= maxLength) {
 
@@ -96,6 +135,6 @@ $(function() {
             );
             running = running + 1;
         }
-    }
+    }*/
 
 });
