@@ -9,9 +9,9 @@ $(function() {
         "size":"42",
         "hosts":[
             {"name":"SRV18","size":1,"bucket":"Virtual Platforms Grid-1","ip":"62.90.132.135","events":"","submenu":"ONCLICK SUBMENU CONTENT","pos":"20"},
-            {"name":"SRV20","size":3,"bucket":"Virtual Platforms Grid-1","ip":"62.90.132.151","events":"","submenu":"ONCLICK SUBMENU CONTENT","pos":"0"},
+            {"name":"SRV20","size":5,"bucket":"Virtual Platforms Grid-1","ip":"62.90.132.151","events":"","submenu":"ONCLICK SUBMENU CONTENT","pos":"0"},
             {"name":"SRV27","size":1,"bucket":"Virtual Platforms Grid-1","ip":"62.90.132.23","events":"","submenu":"ONCLICK SUBMENU CONTENT","pos":"14"},
-            {"name":"SRV28","size":1,"bucket":"Virtual Platforms Grid-1","ip":"62.90.132.10","events":"","submenu":"ONCLICK SUBMENU CONTENT","pos":"10"},
+            {"name":"SRV28","size":4,"bucket":"Virtual Platforms Grid-1","ip":"62.90.132.10","events":"","submenu":"ONCLICK SUBMENU CONTENT","pos":"10"},
             {"name":"SRV23","size":1,"bucket":"Virtual Platforms Grid-1","ip":"62.90.132.174","events":"","submenu":"ONCLICK SUBMENU CONTENT","pos":"1"},
             {"name":"SRV29","size":1,"bucket":"Virtual Platforms Grid-1","ip":"62.90.132.140","events":"","submenu":"ONCLICK SUBMENU CONTENT","pos":"0"}
         ]
@@ -29,7 +29,7 @@ $(function() {
     zeroPosHosts = [];
     nonZeroPosHosts = [];
     wholeHosts = [];
-
+    indexArray = [];
     $.each(hosts, function(index, host) {
         host.pos = parseInt(host.pos);
         if(host.pos === 0) {
@@ -84,15 +84,18 @@ $(function() {
         var hString = "";
 
         for(var i = 0; i < value.size; i++) {
-            if((i + 1) === value.size) {
-                hString = "<div class='individual-server-first-child' style='border-bottom:none'>" + (running) + "</div>" + hString;
+            
+            if(i === 0 ) {
+                indexArray[i] = "<div class='individual-server-first-child' style='border-bottom:none'>" + ( running ) + "</div>";
             } else {
-                hString = "<div class='individual-server-first-child'>" + (running) + "</div>" + hString;
+                indexArray[i] = "<div class='individual-server-first-child'>" + ( running ) + "</div>";
             }
             
             running = running + 1; 
         }
 
+        hString = indexArray.reverse().join('');
+        indexArray.length = 0;
         div =
         $(".rack_body")
         .prepend(
