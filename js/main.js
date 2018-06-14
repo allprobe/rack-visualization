@@ -54,7 +54,7 @@ $(function() {
         if(nonZeroPosHosts[0]) {
             if(nonZeroPosHosts[0].pos === i) {
                 wholeHosts[i - 1] = $.extend({}, nonZeroPosHosts[0]);
-                i = i + 1;
+                i = i + nonZeroPosHosts[0].size;
                 nonZeroPosHosts.shift();
                 continue;
             }
@@ -75,43 +75,42 @@ $(function() {
     }
 
     console.log("All data", wholeHosts);
-    //wholeHosts.shift();
-    //wholeHosts.reverse();
+    
     $.each(wholeHosts, function(index, value) {
+        
         if(value) {
 
-        
-        var hString = "";
+            var hString = "";
 
-        for(var i = 0; i < value.size; i++) {
-            
-            if(i === 0 ) {
-                indexArray[i] = "<div class='individual-server-first-child' style='border-bottom:none'>" + ( running ) + "</div>";
-            } else {
-                indexArray[i] = "<div class='individual-server-first-child'>" + ( running ) + "</div>";
+            for(var i = 0; i < value.size; i++) {
+                
+                if(i === 0 ) {
+                    indexArray[i] = "<div class='individual-server-first-child' style='border-bottom:none'>" + ( running ) + "</div>";
+                } else {
+                    indexArray[i] = "<div class='individual-server-first-child'>" + ( running ) + "</div>";
+                }
+                
+                running = running + 1; 
             }
-            
-            running = running + 1; 
-        }
 
-        hString = indexArray.reverse().join('');
-        indexArray.length = 0;
-        div =
-        $(".rack_body")
-        .prepend(
-            $( "<div>" + 
-                    "<div class='individual-server-first'>" + hString + "</div>" +
-                    "<div class='individual-server-second'>" + 
-                        "<span>"+ value.name + "</span>" + 
-                    "</div>" +
-                    "<div class='individual-server-third'></div>" + 
-                "</div>" 
-            )
-            .addClass("individual-server")
-            .attr("index", index)
-            .css("height", (value.size * unitHeight) + "px")
-        );
-    }
+            hString = indexArray.reverse().join('');
+            indexArray.length = 0;
+            div =
+            $(".rack_body")
+            .prepend(
+                $( "<div>" + 
+                        "<div class='individual-server-first'>" + hString + "</div>" +
+                        "<div class='individual-server-second'>" + 
+                            "<span>"+ value.name + "</span>" + 
+                        "</div>" +
+                        "<div class='individual-server-third'></div>" + 
+                    "</div>" 
+                )
+                .addClass("individual-server")
+                .attr("index", index)
+                .css("height", (value.size * unitHeight) + "px")
+            );
+        }
         console.log(value, index);
                     
     });
