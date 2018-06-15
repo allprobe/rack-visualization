@@ -25,11 +25,17 @@ $(function() {
     var running = 1;
     var hosts = jsonData.hosts;
     var dummy = {"name": "", size: 1};
-
+    var rackBodyPos = $('.rack_container').position();
+    
     zeroPosHosts = [];
     nonZeroPosHosts = [];
     wholeHosts = [];
     indexArray = [];
+    
+    $('.sub_menu_rectangle').mouseout(function() {
+        $(this).hide();
+    });
+
     $.each(hosts, function(index, host) {
         host.pos = parseInt(host.pos);
         if(host.pos === 0) {
@@ -48,7 +54,7 @@ $(function() {
     });
 
     var i = 1;
-    var dummyData = {"name":"","size":1,"bucket":"","ip":"","events":"","submenu":"","pos": null};
+    var dummyData = {"name":"",'dummy': true, "size":1,"bucket":"","ip":"","events":"","submenu":"","pos": null};
     
     while(i <= 42) {
         if(nonZeroPosHosts[0]) {
@@ -75,7 +81,7 @@ $(function() {
     }
 
     console.log("All data", wholeHosts);
-    
+
     $.each(wholeHosts, function(index, value) {
         
         if(value) {
@@ -95,48 +101,56 @@ $(function() {
 
             hString = indexArray.reverse().join('');
             indexArray.length = 0;
-            div =
-            $(".rack_body")
-            .prepend(
-                $( "<div>" + 
+            
+            div = $( "<div>" + 
                         "<div class='individual-server-first'>" + hString + "</div>" +
                         "<div class='individual-server-second'>" + 
                             "<span>"+ value.name + "</span>" + 
                         "</div>" +
                         "<div class='individual-server-third'></div>" + 
-                    "</div>" 
-                )
-                .addClass("individual-server")
-                .attr("index", index)
-                .css("height", (value.size * unitHeight) + "px")
-            );
+                        "</div>" 
+                    )
+                    .addClass("individual-server")
+                    .attr("index", index)
+                    .css("height", (value.size * unitHeight) + "px");
+
+            $(".rack_body")
+                .prepend(div);
+            
+            
+            if(! value.dummy) {
+                
+                $(div).data("myJson", value);
+                
+                $(div).click(function(event) {
+                    $('.data_rectangle').hide();
+                    var jsonContent = $(this).data('myJson');
+                    console.log($(this).data('myJson'), event.pageX, event.pageY);
+                    var newPos = { top: event.pageY - 10, left: event.pageX - 10 };
+                    $('.sub_menu_rectangle').html(jsonContent.submenu)
+                        .css(newPos)
+                        .show();
+                });
+    
+                $(div).mousemove(function(event) {
+                    var jsonContent = $(this).data('myJson');
+                    console.log("sdfdsfs")
+                    var divPos = $(this).position();
+                    var newPos = { top: event.pageY, left: event.pageX + 10 };
+                    $('.data_rectangle').text(jsonContent.ip)
+                        .css(newPos)
+                        .show();
+                    
+                });
+
+                $(div).mouseout(function() {
+                    $('.data_rectangle').hide();
+                });
+            }
         }
+        
         console.log(value, index);
                     
     });
-
-    /*if( jsonData.hosts.length < maxLength) {
-        
-        var begin = jsonData.hosts.length;
-        while(running <= maxLength) {
-
-            div =
-            $(".rack_body")
-            .append(
-                $( "<div>" + 
-                        "<div class='individual-server-first'>" + (reverseL - running) + "</div>" +
-                        "<div class='individual-server-second'>" + 
-                            "<span>" + "</span>" + 
-                        "</div>" +
-                        "<div class='individual-server-third'></div>" + 
-                    "</div>" 
-                )
-                .addClass("individual-server")
-                .attr("index", begin)
-                .css("height", (unitHeight) + "px")
-            );
-            running = running + 1;
-        }
-    }*/
 
 });

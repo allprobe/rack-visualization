@@ -96,6 +96,33 @@ textarea {
 /* ==========================================================================
    Author's custom styles
    ========================================================================== */
+
+.data_rectangle {
+    margin: auto;
+    border-radius: 3px;
+    border: 1px solid black;
+    width: auto;
+    position: absolute;
+    background-color: white;
+    min-width: 50px;
+    min-height: 20px;
+    z-index: 1000;
+    display: none;
+}
+
+.sub_menu_rectangle {
+    margin: auto;
+    border-radius: 3px;
+    border: 1px solid black;
+    width: auto;
+    position: absolute;
+    background-color: white;
+    min-width: 70px;
+    min-height: 90px;
+    z-index: 1001;
+    display: none;
+}
+   
 .content {
     width: 80%;
     height: 700px;
