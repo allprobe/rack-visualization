@@ -1,0 +1,12 @@
+{
+    "name":"M-02 \/ 1x",
+    "size":"42",
+    "hosts":[
+        {"name":"SRV18","size":1,"bucket":"Virtual Platforms Grid-1","ip":"62.90.132.135","events":"","submenu":"ONCLICK SUBMENU CONTENT","pos":"20"},
+        {"name":"SRV20","size":5,"bucket":"Virtual Platforms Grid-1","ip":"62.90.132.151","events":"","submenu":"ONCLICK SUBMENU CONTENT","pos":"0"},
+        {"name":"SRV27","size":1,"bucket":"Virtual Platforms Grid-1","ip":"62.90.132.23","events":"","submenu":"ONCLICK SUBMENU CONTENT","pos":"14"},
+        {"name":"SRV28","size":4,"bucket":"Virtual Platforms Grid-1","ip":"62.90.132.10","events":"","submenu":"ONCLICK SUBMENU CONTENT","pos":"10"},
+        {"name":"SRV23","size":1,"bucket":"Virtual Platforms Grid-1","ip":"62.90.132.174","events":"","submenu":"ONCLICK SUBMENU CONTENT","pos":"1"},
+        {"name":"SRV29","size":1,"bucket":"Virtual Platforms Grid-1","ip":"62.90.132.140","events":[{"issue": 1}],"submenu":"ONCLICK SUBMENU CONTENT","pos":"0"}
+    ]
+}
