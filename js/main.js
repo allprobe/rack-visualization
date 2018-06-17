@@ -3,7 +3,7 @@ $(function() {
     // From the main data, split the data to two parts; 1) All the data with pos 0 and 2) All the data with pos != 0 AND SORT
     // Then create a new array with size 42, arrange the data just like the rack.
     var jsonData;
-    var unitHeight = 20;
+    var unitHeight = 14;
     var maxLength = 42;
     var reverseL = 43;
     var height = 0;

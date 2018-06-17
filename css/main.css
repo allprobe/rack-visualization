@@ -259,11 +259,12 @@ textarea {
     display: flex;
     justify-content: center;
     flex-direction: column;
+    font-size: 13px;
 }
 
 .individual-server-first-child {
     width: 100%;
-    height: 19px;
+    height: 13px;
     border-bottom: 1px solid white;
 }
 
@@ -276,6 +277,7 @@ textarea {
     display: flex;
     justify-content: center;
     flex-direction: column;
+    font-size: 14px;
 }
 
 .individual-server-third {
