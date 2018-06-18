@@ -1,7 +1,10 @@
 $(function() {
     // Idea.
-    // From the main data, split the data to two parts; 1) All the data with pos 0 and 2) All the data with pos != 0 AND SORT
-    // Then create a new array with size 42, arrange the data just like the rack.
+    // From the main data, split the data to two parts; 
+    // 1) All the data with pos 0 and 
+    // 2) All the data with pos != 0 AND SORT
+    // 3) Then create a new array with size 42, arrange the data just like the rack.
+    
     var jsonData;
     var unitHeight = 14;
     var maxLength = 42;
@@ -17,17 +20,19 @@ $(function() {
     nonZeroPosHosts = [];
     wholeHosts = [];
     indexArray = [];
+    
+    getJson = function(url) {
+        $.get(url, function(data) {
+            console.log("Hola", data);
+            jsonData = data;    
+            initialize();
+            divideData();
+            sortData();
+            combineDividedArrays();
+            render();
+        });        
+    };
 
-    $.get('data.json', function(data) {
-        console.log("Hola", data);
-        jsonData = data;    
-        initialize();
-        divideData();
-        sortData();
-        combineDividedArrays();
-        render();
-    });
- 
     $('.sub_menu_rectangle').mouseout(function() {
         $(this).hide();
     });
