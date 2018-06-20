@@ -66,7 +66,7 @@
     width: auto;
     position: absolute;
     background-color: white;
-    width: 170px;
+    width: 210px;
     min-height: 90px;
     z-index: 1001;
     display: none;
@@ -274,7 +274,7 @@ $(function() {
         var dummy = {"name": "", size: 1};
         var rackBodyPos = $('.rack_container').offset();
         console.log("Position data", rackBodyPos);
-        
+
         zeroPosHosts = [];
         nonZeroPosHosts = [];
         wholeHosts = [];
@@ -292,7 +292,7 @@ $(function() {
             //});        
         };
 
-        $('.sub_menu_rectangle').mouseout(function() {
+        $('.sub_menu_rectangle').mouseleave(function() {
             $(this).hide();
         });
 
