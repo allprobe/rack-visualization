@@ -66,7 +66,7 @@
     width: auto;
     position: absolute;
     background-color: white;
-    min-width: 70px;
+    width: 170px;
     min-height: 90px;
     z-index: 1001;
     display: none;
@@ -264,6 +264,7 @@ $(function() {
         var div;
         var running = 1;
         var hosts;
+        var hostsNo = 0;
         var dummy = {"name": "", size: 1};
         var rackBodyPos = $('.rack_container').position();
         
@@ -290,6 +291,7 @@ $(function() {
 
         initialize = function () {
             hosts = jsonData.hosts;
+            hostsNo = parseInt(jsonData.size);
         };
         
         divideData = function() {
@@ -327,7 +329,7 @@ $(function() {
                 "pos": null
             };
             
-            while(i <= 42) {
+            while(i <= hostsNo) {
                 if(nonZeroPosHosts[0]) {
                     if(nonZeroPosHosts[0].pos === i) {
                         wholeHosts[i - 1] = $.extend({}, nonZeroPosHosts[0]);
@@ -446,7 +448,7 @@ $(function() {
         // Pass url as a parameter.
         var data = {
             "name":"M-02 \/ 1x",
-            "size":"42",
+            "size":"30",
             "hosts":[
                 {"name":"SRV18","size":1,"bucket":"Virtual Platforms Grid-1","ip":"62.90.132.135","events":"","submenu":"ONCLICK SUBMENU CONTENT","pos":"20"},
                 {"name":"SRV20","size":5,"bucket":"Virtual Platforms Grid-1","ip":"62.90.132.151","events":"","submenu":"ONCLICK SUBMENU CONTENT","pos":"0"},
