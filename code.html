@@ -272,7 +272,8 @@ $(function() {
         var hosts;
         var hostsNo = 0;
         var dummy = {"name": "", size: 1};
-        var rackBodyPos = $('.rack_container').position();
+        var rackBodyPos = $('.rack_container').offset();
+        console.log("Position data", rackBodyPos);
         
         zeroPosHosts = [];
         nonZeroPosHosts = [];
