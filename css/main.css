@@ -28,7 +28,11 @@
     z-index: 1001;
     display: none;
 }
-   
+
+.rack_no {
+    
+}
+
 .content {
     width: 80%;
     height: 700px;
