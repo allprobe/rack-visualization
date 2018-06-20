@@ -7,11 +7,12 @@
     </head>
     <body>
         <!--Copy code HTML from here -->
-        <div class="data_rectangle"></div>
-        <div class="sub_menu_rectangle"></div>
+        
         <div class="content">
             <div class="rack_display">
                 <div class="rack_container">
+                    <div class="data_rectangle"></div>
+                    <div class="sub_menu_rectangle"></div>
                     <div class="rack_top">
                         <div class="rack_top_corner_rect"></div>
                         <div class="rack_top_middle_rect"></div>
@@ -101,6 +102,7 @@
     width: 402px;
     height: auto;
     border: 1px solid black;
+    position: relative;
     
 }
 
@@ -416,7 +418,8 @@ $(function() {
             $(div).mousemove(function(event) {
                 var jsonContent = $(this).data('myJson');
                 var divPos = $(this).position();
-                var newPos = { top: event.pageY, left: event.pageX + 10 };
+                var newPos = { top: event.pageY - rackBodyPos.top , 
+                    left: event.pageX - rackBodyPos.left + 10 };
                 $('.data_rectangle').text(jsonContent.ip)
                     .css(newPos)
                     .show();
@@ -429,7 +432,8 @@ $(function() {
                 $('.data_rectangle').hide();
                 var jsonContent = $(this).data('myJson');
                 console.log($(this).data('myJson'), event.pageX, event.pageY);
-                var newPos = { top: event.pageY - 10, left: event.pageX - 10 };
+                var newPos = { top: event.pageY - rackBodyPos.top - 10, 
+                    left: event.pageX - rackBodyPos.left - 10 };
                 $('.sub_menu_rectangle').html(jsonContent.submenu)
                     .css(newPos)
                     .show();
