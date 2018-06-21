@@ -281,7 +281,7 @@ $(function() {
         indexArray = [];
         
         getJson = function(data) {
-            //$.get(url, function(data) {
+            
             console.log("Hola", data);
             jsonData = data;    
             initialize();
@@ -289,7 +289,7 @@ $(function() {
             sortData();
             combineDividedArrays();
             render();
-            //});        
+                   
         };
 
         $('.sub_menu_rectangle').mouseleave(function() {
@@ -361,7 +361,7 @@ $(function() {
         render = function() {
 
             $.each(wholeHosts, function(index, value) {
-            
+                console.log(index);
                 if(value) {
         
                     var hString = "";
