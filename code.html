@@ -9,35 +9,18 @@
         <!--Copy code HTML from here -->
         
         <div class="content">
-            <div class="rack_display">
-                <div class="rack_container">
-                    <div class="data_rectangle"></div>
-                    <div class="sub_menu_rectangle"></div>
-                    <div class="rack_top">
-                        <div class="rack_top_corner_rect"></div>
-                        <div class="rack_top_middle_rect"></div>
-                        <div class="rack_top_corner_rect"></div>
-                    </div>
-
-                    <div class="rack_body">
-                    </div>
-
-                    <div class="rack_bottom_section">
-                        <div class="rack_top">
-                            <div class="rack_top_corner_rect"></div>
-                            <div class="rack_top_middle_rect"></div>
-                            <div class="rack_top_corner_rect"></div>
-                        </div>
-                    </div>
-
-                </div>
-            </div>
+            
+                <div class="rack1" style="float: left; margin-right: 10px;"></div>
+                <div class="rack2" style="float: left;"></div>
+            
             <!-- Copy HTML code untill here -->
-            <div class="rack_info">good</div>
+            
         </div>
         <!-- This should be gone; I add it here so that it works here in local.-->
-        <script src="https://cdn.allprobe.com/js/jquery-2.0.0.min.js?187897021" crossorigin="anonymous"></script>
-
+        <!--<script src="https://cdn.allprobe.com/js/jquery-2.0.0.min.js?187897021" crossorigin="anonymous"></script> -->
+        <script src="js/vendor/jquery-3.2.1.min.js"></script>
+        <script src="js/vendor/jquery-ui.js"></script>
+        <script src="allprobe.rack.widget.js"></script>
     </body>
 </html>
 		<style>
@@ -96,8 +79,14 @@
 			height: 100%;
 			float: left;
 			border-left: 1px solid black;
-		}
-
+        }
+        
+        .title_place {
+            display: table;
+            margin: auto;
+            padding-top: 5px;
+            font-weight: bold;
+        }
 		.server {
 			width: 50px;
 			height: 30px;
@@ -217,7 +206,7 @@
 			flex-direction: column;
 			font-size: 13px;
 		}
-
+        
 		.individual-server-first-child {
 			width: 100%;
 			height: 13px;
@@ -262,7 +251,7 @@
 
 <script>
     
-$(function() {
+/*$(function() {
     // Idea.
     // From the main data, split the data to two parts; 
     // 1) All the data with pos 0 and 
@@ -299,10 +288,7 @@ $(function() {
                    
         };
 
-        $('.sub_menu_rectangle').mouseleave(function() {
-            $(this).hide();
-        });
-
+        
         initialize = function () {
             hosts = jsonData.hosts;
             hostsNo = parseInt(jsonData.size);
@@ -456,7 +442,7 @@ $(function() {
             });
         };
 
-    });
+    }); */
 
     $(function() {
         // Pass url as a parameter.
@@ -474,7 +460,26 @@ $(function() {
         };
         // here I change the function call to data; I guess , you would get the data here, Otherwise please let me know.
         // I will add code to bring json from your url;
-        getJson(data);
+        //getJson(data);
+
+        //$(function() {
+            $(".rack1").rack(
+                {   
+                    title: "Front",
+                    data: data
+                }
+            );
+
+            $(".rack2").rack(
+                {
+                    title: "Back",
+                    data: data
+                }
+            );
+
+        //});
     });
 
+    
+    
 </script>
