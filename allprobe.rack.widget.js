@@ -66,6 +66,11 @@ $(function() {
             this.nonZeroPosHosts = [];
             this.jsonData =  null;
             this.unitHeight = 14;
+            // We have 3 values to take care when we choose height of U
+            // Now: if its a U with a server its 16px tall;
+            // If a U doesn't have a server its 14 px [unit height]
+            // individual server first has (unitHeight - 1)px height [difference of 1 accounted for 1px border]
+            
             this.maxLength = 42;
             this.reverseL = 43;
             this.height = 0;
@@ -141,6 +146,8 @@ $(function() {
         render: function() {
 
             var that = this;
+            var height = 0;
+
             $.each(that.wholeHosts, function(index, value) {
                 console.log(index);
                 if(value) {
@@ -157,7 +164,11 @@ $(function() {
                             }
                         }
                         if(i === 0 ) {
-                            that.indexArray[i] = "<div class='individual-server-first-child' style='border-bottom:none;" + colorText + "'><span class='rack_no'>" + ( that.running ) + "</span></div>";
+                            if(value.size === 1 && value.dummy !== true) {
+                                that.indexArray[i] = "<div class='individual-server-first-child' style='border-bottom:none;height:" + (that.unitHeight + 1)+"px;" + colorText + "'><span class='rack_no'>" + ( that.running ) + "</span></div>";
+                            } else {
+                                that.indexArray[i] = "<div class='individual-server-first-child' style='height:" + (that.unitHeight - 1)+"px;border-bottom:none;" + colorText + "'><span class='rack_no'>" + ( that.running ) + "</span></div>";
+                            }
                         } else {
                             that.indexArray[i] = "<div class='individual-server-first-child' style='"+ colorText +"'>" + ( that.running ) + "</div>";
                         }
@@ -168,6 +179,10 @@ $(function() {
                     hString = that.indexArray.reverse().join('');
                     that.indexArray.length = 0;
                     
+                    height = that.unitHeight;
+                    if(value.size === 1 && value.dummy !== true) {
+                        height = that.unitHeight + 2;
+                    }
                     that.div = $( "<div>" + 
                                 "<div class='individual-server-first'>" + hString + "</div>" +
                                 "<div class='individual-server-second'>" + 
@@ -178,7 +193,7 @@ $(function() {
                             )
                             .addClass("individual-server")
                             .attr("index", index)
-                            .css("height", (value.size * that.unitHeight) + "px");
+                            .css("height", (value.size * height) + "px");
         
                     that.element.find(".rack_body")
                         .prepend(that.div);
