@@ -164,11 +164,11 @@ $(function() {
                             }
                         }
                         if(i === 0 ) {
-                            if(value.size === 1 && value.dummy !== true) {
-                                that.indexArray[i] = "<div class='individual-server-first-child' style='border-bottom:none;height:" + (that.unitHeight + 1)+"px;" + colorText + "'><span class='rack_no'>" + ( that.running ) + "</span></div>";
-                            } else {
+                            //if(value.size === 1 && value.dummy !== true) {
+                                //that.indexArray[i] = "<div class='individual-server-first-child' style='border-bottom:none;height:" + (that.unitHeight)+"px;" + colorText + "'><span class='rack_no'>" + ( that.running ) + "</span></div>";
+                            //} else {
                                 that.indexArray[i] = "<div class='individual-server-first-child' style='height:" + (that.unitHeight - 1)+"px;border-bottom:none;" + colorText + "'><span class='rack_no'>" + ( that.running ) + "</span></div>";
-                            }
+                            //}
                         } else {
                             that.indexArray[i] = "<div class='individual-server-first-child' style='"+ colorText +"'>" + ( that.running ) + "</div>";
                         }
@@ -181,7 +181,7 @@ $(function() {
                     
                     height = that.unitHeight;
                     if(value.size === 1 && value.dummy !== true) {
-                        height = that.unitHeight + 2;
+                        //height = that.unitHeight + 2;
                     }
                     that.div = $( "<div>" + 
                                 "<div class='individual-server-first'>" + hString + "</div>" +
