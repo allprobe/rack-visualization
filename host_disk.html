@@ -1,0 +1,79 @@
+<!doctype html>
+<html class="no-js" lang="">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="x-ua-compatible" content="ie=edge">
+        <title>Host Disk</title>
+        <link rel="stylesheet" href="./css/bootstrap.min.css"></style>
+    </head>
+    <body>
+        <!--Copy code HTML from here -->
+        
+        <div class="container">
+            
+                <div class="host_disk_wizard_container">
+                    
+                </div>
+            
+            <!-- Copy HTML code untill here -->
+            
+        </div>
+        <!-- This should be gone; I add it here so that it works here in local.-->
+        <!--<script src="https://cdn.allprobe.com/js/jquery-2.0.0.min.js?187897021" crossorigin="anonymous"></script> -->
+        <script src="js/vendor/jquery-3.2.1.min.js"></script>
+        <script src="js/vendor/jquery-ui.js"></script>
+        <script src="js/vendor/bootstrap.min.js"></script>
+        <script src="allprobe.host_disk.widget.js"></script>
+    </body>
+</html>
+
+<style>
+    .host_disk_wizard_container {
+        width: 500px;
+        height: 400px;
+        
+        border: 1px solid black;
+        margin: 0 auto;
+    }
+    .title {
+        text-align: center;
+        background-color: lightskyblue;
+    }
+    .step {
+        width: 90%;
+        height: 95%;
+        margin: 0 auto;
+       
+    }
+
+    .previous {
+        float: left;
+    }
+
+    .next {
+        float: right
+    }
+
+    .fields {
+        height: 280px;
+    }
+
+    .live_disk {
+
+    }
+
+    .controls {
+
+    }
+</style>
+
+<script>
+
+    $(function() {
+
+        $(".host_disk_wizard_container").hostDisk();
+
+    });
+    
+
+</script>
