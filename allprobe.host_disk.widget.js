@@ -15,12 +15,17 @@ $(function () {
         initialize: function() {
             
             this.currentStep = 1;
+            this.data = {
+                noOfFrontRows: null,
+                noOfBackRows: null
+            };
             console.log("Okay");
         },
 
         firstStep: function() {
 
             this.currentStep = 1;
+
             this.firstStepHtml = '<div class="first-step-container step">' +
                             '<div class="row">' +
                                 '<div class="col-lg-12 title"><h3>Host disk front/back configuration</h3></div>' +
@@ -32,7 +37,16 @@ $(function () {
                                     '<label>No of Rows at back</label><input type="number" id="backRowValue">' +
                                 '</fieldset>' +
                                 '</div>' +
-                                '<div class="col">Graphics</div>' +
+                                '<div class="col">' +
+                                    '<div class="row">' +
+                                        '<div class="front-and-back">' +
+                                            '<div class="graphics-container-front"></div>' +
+                                        '</div>' +
+                                        '<div class="front-and-back">' + 
+                                            '<div class="graphics-container-back"></div>' +
+                                        '</div>' +
+                                    '</div>' +
+                                '</div>' +
                             '</div>' +
                             '<div class="row">' +
                                 '<div class="col-md-12">' +
@@ -44,6 +58,76 @@ $(function () {
             this.element.html(this.firstStepHtml);
 
             this.element.find('#firstStepNext').click(this.firstStepNextHandler.bind(this));
+            this.element.find('#frontRowValue').blur(this.dynamicRows.bind(this));
+            this.element.find('#backRowValue').blur(this.dynamicRows.bind(this));
+
+            if( this.data !== null) {
+                var event;
+                if(this.data.noOfFrontRows !== null) {
+                    event = {
+                        target: {
+                            id: "frontRowValue",
+                            value: this.data.noOfFrontRows
+                        }
+                    };
+                    $('#frontRowValue').val(this.data.noOfFrontRows);
+                    this.dynamicRows(event);
+                }
+
+                if(this.data.noOfBackRows !== null) {
+                    event = {
+                        target: {
+                            id: "backRowValue",
+                            value: this.data.noOfBackRows
+                        }
+                    };
+                    $('#backRowValue').val(this.data.noOfBackRows);
+                    this.dynamicRows(event);
+                }
+                
+            }
+        },
+
+        dynamicRows: function(event) {
+            
+            var value = parseInt(event.target.value);
+            
+            if( value > 0 ) {
+                var length = value - 1;
+                var html = '<div class="disk"></div>';//= "<div class='disk-container'></div>";
+
+                for(var i = 1; i <= length; i ++) {
+                    html = html + '<div class="disk"></div>';
+                }
+                if( event.target.id === "frontRowValue") {
+                    
+                    this.data.noOfFrontRows = value;
+                    
+
+                    html = 'Front: <div class="disk-container">' + html + '</div>';
+                    $('.graphics-container-front').html(html);
+                } 
+                
+                if( event.target.id === "backRowValue") {
+                    
+                    this.data.noOfBackRows = value;
+
+                    html = 'Back: <div class="disk-container">' + html + '</div>';
+                    $('.graphics-container-back').html(html);
+                }     
+            }
+
+            if(value === 0) {
+                if( event.target.id === "frontRowValue") {
+                    this.data.noOfFrontRows = value;
+                    $('.graphics-container-front').html("");
+                }
+
+                if( event.target.id === "backRowValue") {
+                    this.data.noOfBackRows = value;
+                    $('.graphics-container-back').html("");
+                }
+            }
         },
 
         firstStepNextHandler: function(event) {
