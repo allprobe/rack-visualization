@@ -150,7 +150,16 @@ $(function () {
                                 '<div class="col-lg-12 title"><h3>Disks configuration</h3></div>' +
                             '</div>' +
                                 '<div class="row">' +
-                                    '<div class="col fields">fields</div>' +
+                                    '<div class="col fields">' +
+                                        '<div class="row">' +
+                                            '<div class="front-and-back">' +
+                                                '<div class="second-section-front"></div>' +
+                                            '</div>' +
+                                            '<div class="front-and-back">' +
+                                                '<div class="second-section-back"></div>' +
+                                            '</div>' +
+                                        '</div>' +
+                                    '</div>' +
                                     '<div class="col"></div>' +
                                 '</div>' +
                                 '<div class="row">' +
@@ -174,8 +183,18 @@ $(function () {
 
         showRows: function() {
             
+            var event = {
+                target: {
+                    value: this.data.noOfFrontRows
+                }
+            };
+            
+            var html = this.generateRowHtml(event);
+            $('.second-section-front').html('Front: <div class="disk-container">' + html + '</div>');
 
-
+            event.target.value = this.data.noOfBackRows;
+            html = this.generateRowHtml(event);
+            $('.second-section-back').html('Back: <div class="disk-container">' + html + '</div>');
         }
 
 
