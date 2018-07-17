@@ -127,10 +127,10 @@ $(function () {
             }
 
             var length = value - 1;
-            var html = '<div class="disk"></div>';
+            var html = '<div class="disk" index="0"></div>';
 
             for(var i = 1; i <= length; i ++) {
-                html = html + '<div class="disk"></div>';
+                html = html + '<div class="disk" index="'+ i +'"></div>';
             }
 
             return html;
@@ -152,10 +152,15 @@ $(function () {
                                 '<div class="row">' +
                                     '<div class="col fields">' +
                                         '<div class="row">' +
-                                            '<div class="front-and-back">' +
+                                            '<div class="front-and-back menu-reference">' +
+                                                '<div class="dropdown-menu">' +
+                                                    '<a class="dropdown-item" href="#">Regular link</a>' +
+                                                    '<a class="dropdown-item disabled" href="#">Disabled link</a>' +
+                                                    '<a class="dropdown-item" href="#">Another link</a>' +
+                                                '</div>' +
                                                 '<div class="second-section-front"></div>' +
                                             '</div>' +
-                                            '<div class="front-and-back">' +
+                                            '<div class="front-and-back menu-reference">' +
                                                 '<div class="second-section-back"></div>' +
                                             '</div>' +
                                         '</div>' +
@@ -173,7 +178,7 @@ $(function () {
             this.element.html(this.secondStepHtml);
 
             this.showRows();
-
+            this.addRowClickHandlers();
             this.element.find('#secondStepPrevious').click(this.secondStepPreviousHandler.bind(this));
         },
 
@@ -195,6 +200,22 @@ $(function () {
             event.target.value = this.data.noOfBackRows;
             html = this.generateRowHtml(event);
             $('.second-section-back').html('Back: <div class="disk-container">' + html + '</div>');
+        },
+
+        addRowClickHandlers: function() {
+            var that = this;
+            $('.second-section-front').find('.disk').each(function(index, disk) {
+                $(disk).click(function(event) {
+                    that.rowClickHandler(event, this);
+                });
+            });
+        },
+
+        rowClickHandler: function(event, row) {
+            console.log(event)
+            $('.front-and-back').find('.dropdown-menu')
+            .css({left: '20px', top: event.pageY})
+            .show();
         }
 
 
