@@ -91,43 +91,49 @@ $(function () {
         dynamicRows: function(event) {
             
             var value = parseInt(event.target.value);
-            
-            if( value > 0 ) {
-                var length = value - 1;
-                var html = '<div class="disk"></div>';//= "<div class='disk-container'></div>";
+            var html = this.generateRowHtml(event);
 
-                for(var i = 1; i <= length; i ++) {
-                    html = html + '<div class="disk"></div>';
-                }
-                if( event.target.id === "frontRowValue") {
-                    
-                    this.data.noOfFrontRows = value;
-                    
-
-                    html = 'Front: <div class="disk-container">' + html + '</div>';
-                    $('.graphics-container-front').html(html);
-                } 
+            if( event.target.id === "frontRowValue") {
                 
-                if( event.target.id === "backRowValue") {
-                    
-                    this.data.noOfBackRows = value;
-
-                    html = 'Back: <div class="disk-container">' + html + '</div>';
-                    $('.graphics-container-back').html(html);
-                }     
-            }
-
-            if(value === 0) {
-                if( event.target.id === "frontRowValue") {
-                    this.data.noOfFrontRows = value;
+                this.data.noOfFrontRows = value;
+                
+                html = 'Front: <div class="disk-container">' + html + '</div>';
+                if(value === 0 || isNaN(value)) {
                     $('.graphics-container-front').html("");
+                    return;
                 }
+                $('.graphics-container-front').html(html);
+            } 
+            
+            if( event.target.id === "backRowValue") {
+                
+                this.data.noOfBackRows = value;
 
-                if( event.target.id === "backRowValue") {
-                    this.data.noOfBackRows = value;
+                html = 'Back: <div class="disk-container">' + html + '</div>';
+                if(value === 0 || isNaN(value)) {
                     $('.graphics-container-back').html("");
+                    return;
                 }
+                $('.graphics-container-back').html(html);
+            }     
+            
+        },
+
+        generateRowHtml: function(event) {
+
+            var value = parseInt(event.target.value);
+            if(value === 0) {
+                return "";
             }
+
+            var length = value - 1;
+            var html = '<div class="disk"></div>';
+
+            for(var i = 1; i <= length; i ++) {
+                html = html + '<div class="disk"></div>';
+            }
+
+            return html;
         },
 
         firstStepNextHandler: function(event) {
@@ -157,11 +163,19 @@ $(function () {
 
             this.element.html(this.secondStepHtml);
 
+            this.showRows();
+
             this.element.find('#secondStepPrevious').click(this.secondStepPreviousHandler.bind(this));
         },
 
         secondStepPreviousHandler: function(event) {
             this.firstStep();
+        },
+
+        showRows: function() {
+            
+
+
         }
 
 
