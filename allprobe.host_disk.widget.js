@@ -17,8 +17,13 @@ $(function () {
             this.currentStep = 1;
             this.data = {
                 noOfFrontRows: null,
-                noOfBackRows: null
+                noOfBackRows: null,
+                front: null,
+                back: null,
+                currentlySelectedRowIndex: null,
+                currentlySelectedRowReference: null
             };
+
             console.log("Okay");
         },
 
@@ -33,8 +38,8 @@ $(function () {
                             '<div class="row">' +
                                 '<div class="col fields">' +
                                 '<fieldset>' +
-                                    '<label>No of Rows at front</label><input type="number" id="frontRowValue">' +
-                                    '<label>No of Rows at back</label><input type="number" id="backRowValue">' +
+                                    '<label>No of Rows at front</label><input type="number" max="12" id="frontRowValue">' +
+                                    '<label>No of Rows at back</label><input type="number" max="12" id="backRowValue">' +
                                 '</fieldset>' +
                                 '</div>' +
                                 '<div class="col">' +
@@ -58,8 +63,8 @@ $(function () {
             this.element.html(this.firstStepHtml);
 
             this.element.find('#firstStepNext').click(this.firstStepNextHandler.bind(this));
-            this.element.find('#frontRowValue').blur(this.dynamicRows.bind(this));
-            this.element.find('#backRowValue').blur(this.dynamicRows.bind(this));
+            this.element.find('#frontRowValue').keyup(this.dynamicRows.bind(this));
+            this.element.find('#backRowValue').keyup(this.dynamicRows.bind(this));
 
             if( this.data !== null) {
                 var event;
@@ -138,6 +143,9 @@ $(function () {
 
         firstStepNextHandler: function(event) {
             //console.log(this, event);
+            this.data.front = Array(this.data.noOfFrontRows);
+            this.data.back = Array(this.data.noOfBackRows);
+
             console.log("Heyy");
             this.secondStep();
         },
@@ -220,10 +228,15 @@ $(function () {
         },
 
         rowClickHandler: function(event, row, left) {
-            console.log($('.disk-container-front').position(), event, $('.fields').position());
+            
             $('.fields').find('.dropdown-menu')
             .css({left: left, top: event.pageY - 45})
             .show();
+
+            console.log(row)
+            this.data.currentlySelectedRowReference = row;
+            this.data.currentlySelectedRowIndex = parseInt($(row).attr("index"));
+            console.log(this.data.currentlySelectedRowIndex);
         },
         
         addMenuHandler: function() {
