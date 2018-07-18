@@ -151,18 +151,19 @@ $(function () {
                             '</div>' +
                                 '<div class="row">' +
                                     '<div class="col fields">' +
+
+                                        '<div class="dropdown-menu">' +
+                                            '<a class="dropdown-item" href="#">Add Disk</a>' +
+                                            '<a class="dropdown-item" href="#">Delete Row</a>' +
+                                        '</div>' +
+
                                         '<div class="row">' +
                                             '<div class="front-and-back menu-reference">' +
-                                                '<div class="dropdown-menu">' +
-                                                    '<a class="dropdown-item" href="#">Regular link</a>' +
-                                                    '<a class="dropdown-item disabled" href="#">Disabled link</a>' +
-                                                    '<a class="dropdown-item" href="#">Another link</a>' +
-                                                '</div>' +
                                                 '<div class="second-section-front"></div>' +
                                             '</div>' +
                                             '<div class="front-and-back menu-reference">' +
                                                 '<div class="second-section-back"></div>' +
-                                            '</div>' +
+                                            '</div>' + 
                                         '</div>' +
                                     '</div>' +
                                     '<div class="col"></div>' +
@@ -179,6 +180,7 @@ $(function () {
 
             this.showRows();
             this.addRowClickHandlers();
+            this.addMenuHandler();
             this.element.find('#secondStepPrevious').click(this.secondStepPreviousHandler.bind(this));
         },
 
@@ -195,29 +197,41 @@ $(function () {
             };
             
             var html = this.generateRowHtml(event);
-            $('.second-section-front').html('Front: <div class="disk-container">' + html + '</div>');
+            $('.second-section-front').html('Front: <div class="disk-container disk-container-front">' + html + '</div>');
 
             event.target.value = this.data.noOfBackRows;
             html = this.generateRowHtml(event);
-            $('.second-section-back').html('Back: <div class="disk-container">' + html + '</div>');
+            $('.second-section-back').html('Back: <div class="disk-container disk-container-back">' + html + '</div>');
         },
 
         addRowClickHandlers: function() {
             var that = this;
             $('.second-section-front').find('.disk').each(function(index, disk) {
                 $(disk).click(function(event) {
-                    that.rowClickHandler(event, this);
+                    that.rowClickHandler(event, this, 7);
+                });
+            });
+
+            $('.second-section-back').find('.disk').each(function(index, disk) {
+                $(disk).click(function(event) {
+                    that.rowClickHandler(event, this, 127);
                 });
             });
         },
 
-        rowClickHandler: function(event, row) {
-            console.log(event)
-            $('.front-and-back').find('.dropdown-menu')
-            .css({left: '20px', top: event.pageY})
+        rowClickHandler: function(event, row, left) {
+            console.log($('.disk-container-front').position(), event, $('.fields').position());
+            $('.fields').find('.dropdown-menu')
+            .css({left: left, top: event.pageY - 45})
             .show();
-        }
+        },
+        
+        addMenuHandler: function() {
 
-
+            $('.dropdown-menu').mouseleave(function(event) {
+                $(this).hide();
+            });
+        },
+        
     });
 });
