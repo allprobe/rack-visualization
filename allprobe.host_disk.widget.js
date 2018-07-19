@@ -76,7 +76,7 @@ $(function () {
                         }
                     };
                     $('#frontRowValue').val(this.data.noOfFrontRows);
-                    this.dynamicRows(event);
+                    this.dynamicRows(event, "front");
                 }
 
                 if(this.data.noOfBackRows !== null) {
@@ -87,16 +87,16 @@ $(function () {
                         }
                     };
                     $('#backRowValue').val(this.data.noOfBackRows);
-                    this.dynamicRows(event);
+                    this.dynamicRows(event, "back");
                 }
                 
             }
         },
 
-        dynamicRows: function(event) {
+        dynamicRows: function(event, face) {
             
             var value = parseInt(event.target.value);
-            var html = this.generateRowHtml(event);
+            var html = this.generateRowHtml(event, face);
 
             if( event.target.id === "frontRowValue") {
                 
@@ -124,27 +124,27 @@ $(function () {
             
         },
 
-        generateRowHtml: function(event) {
-
+        generateRowHtml: function(event, face) {
+            
             var value = parseInt(event.target.value);
             if(value === 0) {
                 return "";
             }
 
             var length = value - 1;
-            var html = '<div class="disk" index="0"></div>';
+            var html = '<div class="disk" index="0" face="'+ face +'"></div>';
 
             for(var i = 1; i <= length; i ++) {
-                html = html + '<div class="disk" index="'+ i +'"></div>';
+                html = html + '<div class="disk" index="'+ i +'" face="'+ face +'"></div>';
             }
 
             return html;
         },
 
         firstStepNextHandler: function(event) {
-            //console.log(this, event);
-            this.data.front = Array(this.data.noOfFrontRows);
-            this.data.back = Array(this.data.noOfBackRows);
+            
+            this.data.front = Array(this.data.noOfFrontRows - 1);
+            this.data.back = Array(this.data.noOfBackRows - 1);
 
             console.log("Heyy");
             this.secondStep();
@@ -174,7 +174,9 @@ $(function () {
                                             '</div>' + 
                                         '</div>' +
                                     '</div>' +
-                                    '<div class="col"></div>' +
+                                    '<div class="col">' +
+                                        '<div id="rowSelectedHtmlRef" class="row rowSelected diskSelected"></div>' +
+                                    '</div>' +
                                 '</div>' +
                                 '<div class="row">' +
                                     '<div class="col-md-12">' +
@@ -188,7 +190,8 @@ $(function () {
 
             this.showRows();
             this.addRowClickHandlers();
-            this.addMenuHandler();
+            //this.addMenuHandler();
+            
             this.element.find('#secondStepPrevious').click(this.secondStepPreviousHandler.bind(this));
         },
 
@@ -204,11 +207,11 @@ $(function () {
                 }
             };
             
-            var html = this.generateRowHtml(event);
+            var html = this.generateRowHtml(event, "front");
             $('.second-section-front').html('Front: <div class="disk-container disk-container-front">' + html + '</div>');
 
             event.target.value = this.data.noOfBackRows;
-            html = this.generateRowHtml(event);
+            html = this.generateRowHtml(event, "back");
             $('.second-section-back').html('Back: <div class="disk-container disk-container-back">' + html + '</div>');
         },
 
@@ -229,22 +232,93 @@ $(function () {
 
         rowClickHandler: function(event, row, left) {
             
-            $('.fields').find('.dropdown-menu')
+            /*$('.fields').find('.dropdown-menu')
             .css({left: left, top: event.pageY - 45})
-            .show();
-
+            .show();*/
+            //console.log(this.rowSelectedHtml);
             console.log(row)
             this.data.currentlySelectedRowReference = row;
             this.data.currentlySelectedRowIndex = parseInt($(row).attr("index"));
-            console.log(this.data.currentlySelectedRowIndex);
+            
+            $('.active-row').removeClass('active-row');
+            
+            $(row).addClass("active-row");
+
+            if(! $(".row-selected-button-container")[0] ) {
+                $('.rowSelected').html(this.rowSelectedHtml);
+                this.addDiskHandler();
+            }            
         },
         
-        addMenuHandler: function() {
+        rowSelectedHtml: '<div class="col">' +
+                            '<div class="row-selected-button-container"><button type="button" class="btn add-disk-button btn-success">Add Disk</button></div>' +
+                        '</div>',
+
+        diskHTML: '<div class="single-disk"></div>',
+                        
+        addDiskHandler: function() {
+            
+            $('.add-disk-button').click(this.addDisk.bind(this));
+        },
+
+        defaultDisk: {
+            'disk_index' : '0', 
+            'size_type': '2.5', 
+            'type': 'SAS', 
+            'rpm': '10k',
+            'extra' : ''
+        },
+
+        addDisk: function() {
+            
+            if( $(this.data.currentlySelectedRowReference).find(".single-disk").length <= 11 ) {
+                
+                var index = 0;
+                var face = $(this.data.currentlySelectedRowReference).attr("face");
+                var selector = $(this.data.currentlySelectedRowReference).attr("face");
+                
+
+                
+                /*if($(this.data.currentlySelectedRowReference).attr("face") === "front") {
+                    
+                    if( typeof(this.data.front[this.data.currentlySelectedRowIndex]) === 'undefined') {
+                        this.data.front[this.data.currentlySelectedRowIndex] = [];
+                    }
+                    this.data.front[this.data.currentlySelectedRowIndex].push(this.defaultDisk);
+                    index = this.data.front[this.data.currentlySelectedRowIndex].length - 1;
+
+                } else {
+                    if( typeof(this.data.back[this.data.currentlySelectedRowIndex]) === 'undefined') {
+                        this.data.back[this.data.currentlySelectedRowIndex] = [];
+                    }
+                    this.data.back[this.data.currentlySelectedRowIndex].push(this.defaultDisk);
+                    index = this.data.back[this.data.currentlySelectedRowIndex].length - 1;
+                }*/
+
+                if( typeof(this.data[selector][this.data.currentlySelectedRowIndex]) === 'undefined') {
+                    this.data[selector][this.data.currentlySelectedRowIndex] = [];
+                }
+                this.data[selector][this.data.currentlySelectedRowIndex].push(this.defaultDisk);
+                index = this.data[selector][this.data.currentlySelectedRowIndex].length - 1;
+                
+
+                var diskHtml = $(this.diskHTML).attr("index", index);
+
+                $(this.data.currentlySelectedRowReference).append(diskHtml);
+
+                console.log(this.data.back, this.data.front);
+            }
+            
+            
+        },
+
+        /*addMenuHandler: function() {
 
             $('.dropdown-menu').mouseleave(function(event) {
                 $(this).hide();
             });
-        },
+        },*/
+
         
     });
 });
