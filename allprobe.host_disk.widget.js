@@ -302,16 +302,57 @@ $(function () {
                 index = this.data[selector][this.data.currentlySelectedRowIndex].length - 1;
                 
 
-                var diskHtml = $(this.diskHTML).attr("index", index);
+                var that = this;
 
-                $(this.data.currentlySelectedRowReference).append(diskHtml);
+                var diskHtml = $(this.diskHTML).attr("index", index)
+                    .click(function(event) {
+                        event.stopPropagation();
+                        that.editDiskValues(this);
+                    });
+
+                $(this.data.currentlySelectedRowReference)
+                    .append(diskHtml);
 
                 console.log(this.data.back, this.data.front);
-            }
-            
-            
+            }  
         },
 
+        getFace: function() {
+            return $(this.data.currentlySelectedRowReference).attr("face");
+        },
+
+        getRowIndex: function() {
+            return this.data.currentlySelectedRowIndex;
+        },
+
+        editDiskValues: function(disk) {
+
+            var face = this.getFace();
+            var selectedRow = this.getRowIndex();
+            diskIndex = $(disk).attr('index');
+            console.log(this.data[face][selectedRow][diskIndex]);
+            console.log(disk);
+            $('.diskSelected').html(this.editDiskHtml);
+        },
+
+        editDiskHtml: '<div class="col disk-editing">'+
+                        'Disk Index<input type="number" />' +
+                        'Size:<select id="size_type_select" name="size_type">' +
+                            '<option value="2.5">2.5</option>' +
+                            '<option value="3.5">3.5</option>' +
+                        '</select><br />' +
+                        'Type:<select id="disk_type_select" name="disk_type">' +
+                            '<option value="SAT">SAT</option>' +
+                            '<option value="SATA">SATA</option>' +
+                            '<option value="SSD">SSD</option>' +
+                        '</select><br />' +
+                        'Rpm:<select id="rpm_select" name="rpm">' +
+                            '<option value="7200">7200</option>' +
+                            '<option value="10000">10000</option>' +
+                            '<option value="15000SD">15000</option>' +
+                        '</select><br />' +
+                        'extra: <textarea id="extra_text"></textarea>' +
+                    '</div>',
         /*addMenuHandler: function() {
 
             $('.dropdown-menu').mouseleave(function(event) {
