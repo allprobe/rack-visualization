@@ -31,32 +31,27 @@ $(function () {
 
             this.currentStep = 1;
 
-            this.firstStepHtml = '<div class="first-step-container step">' +
-                            '<div class="row">' +
-                                '<div class="col-lg-12 title"><h3>Host disk front/back configuration</h3></div>' +
+            this.firstStepHtml = '<div class="first-step-container">' +
+                            '<div class="title-row">' +
+                                '<div class=" title">Host disk front/back configuration</div>' +
                             '</div>' +
-                            '<div class="row">' +
-                                '<div class="col fields">' +
-                                '<fieldset>' +
-                                    '<label>No of Rows at front</label><input type="number" max="12" id="frontRowValue">' +
-                                    '<label>No of Rows at back</label><input type="number" max="12" id="backRowValue">' +
-                                '</fieldset>' +
+                            '<div class="info">'+
+                                'Welcome to Host Disk configuration wizard. Please input number of front and back discs you want in the below text boxes. Notice they are auto generated in the right side. Click next to move on to the next section.' +
+                            '</div>' +
+                            '<div class="field-container">' +
+                                '<div class=" fields">' +
+                                    '<fieldset>' +
+                                        '<label>Number of Rows at front:</label><input type="number" class="first-step-input" max="12" id="frontRowValue">' +
+                                        '<label>Number of Rows at back:</label><input type="number" class="first-step-input" max="12" id="backRowValue">' +
+                                    '</fieldset>' +
                                 '</div>' +
-                                '<div class="col">' +
-                                    '<div class="row">' +
-                                        '<div class="front-and-back">' +
-                                            '<div class="graphics-container-front"></div>' +
-                                        '</div>' +
-                                        '<div class="front-and-back">' + 
-                                            '<div class="graphics-container-back"></div>' +
-                                        '</div>' +
-                                    '</div>' +
+                                '<div class="auto-disks">' +
+                                    '<div class="graphics-container-front"></div>' +
+                                    '<div class="graphics-container-back"></div>' +
                                 '</div>' +
                             '</div>' +
-                            '<div class="row">' +
-                                '<div class="col-md-12">' +
-                                    '<button id="firstStepNext" type="button" class="btn btn-primary next">Next</button>' +
-                                '</div>' +
+                            '<div class="button-container">' +
+                                '<button id="firstStepNext" type="button" class="btn btn-primary next">Next</button>' +
                             '</div>' +
                         '</div>';
 
@@ -102,7 +97,7 @@ $(function () {
                 
                 this.data.noOfFrontRows = value;
                 
-                html = 'Front: <div class="disk-container">' + html + '</div>';
+                html = '<label>Front:</label> <div class="disk-container">' + html + '</div>';
                 if(value === 0 || isNaN(value)) {
                     $('.graphics-container-front').html("");
                     return;
@@ -114,7 +109,7 @@ $(function () {
                 
                 this.data.noOfBackRows = value;
 
-                html = 'Back: <div class="disk-container">' + html + '</div>';
+                html = '<label>Back:</label> <div class="disk-container">' + html + '</div>';
                 if(value === 0 || isNaN(value)) {
                     $('.graphics-container-back').html("");
                     return;
