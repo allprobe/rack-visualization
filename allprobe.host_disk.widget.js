@@ -265,7 +265,7 @@ $(function () {
             if( $(this.data.currentlySelectedRowReference).find(".single-disk").length <= 11 ) {
                 
                 var index = 0;
-                var face = $(this.data.currentlySelectedRowReference).attr("face");
+                //var face = $(this.data.currentlySelectedRowReference).attr("face");
                 var selector = $(this.data.currentlySelectedRowReference).attr("face");
                 
 
@@ -317,12 +317,13 @@ $(function () {
         },
 
         editDiskValues: function(disk) {
-
+            //console.log($(disk).parent());
+            this.rowClickHandler({}, $(disk).parent(), 127);
             var face = this.getFace();
             var selectedRow = this.getRowIndex();
             diskIndex = $(disk).attr('index');
-            console.log(this.data[face][selectedRow][diskIndex]);
-            console.log(disk);
+            //console.log(this.data[face][selectedRow][diskIndex]);
+            //console.log(disk);
             $('.diskSelected').html(this.editDiskHtml);
         },
 
