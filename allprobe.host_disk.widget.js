@@ -21,7 +21,9 @@ $(function () {
                 front: null,
                 back: null,
                 currentlySelectedRowIndex: null,
-                currentlySelectedRowReference: null
+                currentlySelectedRowReference: null,
+                currentlySelectedDiskIndex: null,
+                currentlySelectedDiskReference: null,
             };
 
             console.log("Okay");
@@ -318,18 +320,25 @@ $(function () {
 
         editDiskValues: function(disk) {
             //console.log($(disk).parent());
+            $('.active-disk').removeClass('active-disk');
+            $(disk).addClass('active-disk');
+
             this.rowClickHandler({}, $(disk).parent(), 127);
             var face = this.getFace();
             var selectedRow = this.getRowIndex();
             diskIndex = $(disk).attr('index');
-            //console.log(this.data[face][selectedRow][diskIndex]);
+            this.data.currentlySelectedDiskIndex = diskIndex;
+            this.data.currentlySelectedDiskReference = disk;
+            var values = this.data[face][selectedRow][diskIndex];
             //console.log(disk);
             $('.diskSelected').html(this.editDiskHtml);
+            this.autoSave();
+            this.applyValues(values);
         },
 
         editDiskHtml: '<div class="col disk-editing edit-disk-values">'+
                         '<div class="item-left">Disk Index</div>' +
-                        '<div class="item-right"><input type="number" /></div>' +
+                        '<div class="item-right"><input id="disk_index" type="number" /></div>' +
                         
                         '<div class="item-left">Size:</div>' +
                         '<div class="item-right"> '+
@@ -365,7 +374,26 @@ $(function () {
                 $(this).hide();
             });
         },*/
+        
+        applyValues: function(values) {
+            
+            console.log(values)
+            $("#disk_index").val(parseInt(values.disk_index));
+            $("#size_type_select option[value='"+  values.size_type +"']").attr("selected", "selected");
+            $("#disk_type_select option[value='"+  values.type +"']").attr("selected", "selected");
+            $("#rpm_select option[value='"+  values.rpm +"']").attr("selected", "selected");
+            $("#extra_text").val(values.extra);
+        },
 
+        autoSave: function() {
+
+            var rowIndex = this.data.currentlySelectedRowIndex;
+            var diskIndex = this.data.currentlySelectedDiskIndex;
+
+            $("#disk_index").keyup(function(event) {
+                console.log("Wow", event.target.value);
+            });
+        }
         
     });
 });
