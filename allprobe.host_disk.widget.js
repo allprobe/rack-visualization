@@ -148,37 +148,35 @@ $(function () {
         secondStep: function() {
 
             this.currentStep = 2;
-            this.secondStepHtml = '<div class="second-step-container step">' + 
-                            '<div class="row">' +
-                                '<div class="col-lg-12 title"><h3>Disks configuration</h3></div>' +
+            this.secondStepHtml = '<div class="second-step-container">' + 
+                            '<div class="title-row">' +
+                                '<div class="title">Disks configuration</div>' +
                             '</div>' +
-                                '<div class="row">' +
-                                    '<div class="col fields">' +
+                            '<div class="info">' +
+                                'Please sekect a row to add disks. When you select a row, there appears a button to add disks. Select disks to change its parameters.'+
+                            '</div>' +
+                                '<div class="field-container">' +
+                                    '<div class="fields">' +
 
-                                        '<div class="dropdown-menu">' +
-                                            '<a class="dropdown-item" href="#">Add Disk</a>' +
-                                            '<a class="dropdown-item" href="#">Delete Row</a>' +
-                                        '</div>' +
-
-                                        '<div class="row">' +
-                                            '<div class="front-and-back menu-reference">' +
-                                                '<div class="second-section-front"></div>' +
-                                            '</div>' +
-                                            '<div class="front-and-back menu-reference">' +
-                                                '<div class="second-section-back"></div>' +
-                                            '</div>' + 
-                                        '</div>' +
+                                        
+                                        
+                                            '<div class=" divide second-section-front"></div>' +
+                                        
+                                        
+                                            '<div class="divide second-section-back"></div>' +
+                                        
+                                        
                                     '</div>' +
-                                    '<div class="col">' +
-                                        '<div id="rowSelectedHtmlRef" class="row rowSelected diskSelected"></div>' +
+                                    '<div class="action-col">' +
+                                        '<div id="rowSelectedHtmlRef" class="rowSelected diskSelected"></div>' +
                                     '</div>' +
                                 '</div>' +
-                                '<div class="row">' +
-                                    '<div class="col-md-12">' +
-                                        '<button id="secondStepPrevious" type="button" class="btn btn-primary previous">Previous</button>' +
-                                        '<button id="secondStepNext" type="button" class="btn btn-primary next">Next</button>' +
-                                    '</div>' +
+                                
+                                '<div class="button-container">' +
+                                    '<button id="secondStepPrevious" type="button" class="btn btn-primary previous">Previous</button>' +
+                                    '<button id="secondStepNext" type="button" class="btn btn-primary next">Next</button>' +
                                 '</div>' +
+                                
                             '</div>';
 
             this.element.html(this.secondStepHtml);
@@ -231,7 +229,7 @@ $(function () {
             .css({left: left, top: event.pageY - 45})
             .show();*/
             //console.log(this.rowSelectedHtml);
-            console.log(row)
+            console.log(row);
             this.data.currentlySelectedRowReference = row;
             this.data.currentlySelectedRowIndex = parseInt($(row).attr("index"));
             
@@ -245,9 +243,7 @@ $(function () {
             }            
         },
         
-        rowSelectedHtml: '<div class="col">' +
-                            '<div class="row-selected-button-container"><button type="button" class="btn add-disk-button btn-success">Add Disk</button></div>' +
-                        '</div>',
+        rowSelectedHtml: '<div class="row-selected-button-container"><button type="button" class="btn add-disk-button btn-success">Add Disk</button></div>',
 
         diskHTML: '<div class="single-disk"></div>',
                         
@@ -330,23 +326,37 @@ $(function () {
             $('.diskSelected').html(this.editDiskHtml);
         },
 
-        editDiskHtml: '<div class="col disk-editing">'+
-                        'Disk Index<input type="number" />' +
-                        'Size:<select id="size_type_select" name="size_type">' +
-                            '<option value="2.5">2.5</option>' +
-                            '<option value="3.5">3.5</option>' +
-                        '</select><br />' +
-                        'Type:<select id="disk_type_select" name="disk_type">' +
-                            '<option value="SAT">SAT</option>' +
-                            '<option value="SATA">SATA</option>' +
-                            '<option value="SSD">SSD</option>' +
-                        '</select><br />' +
-                        'Rpm:<select id="rpm_select" name="rpm">' +
-                            '<option value="7200">7200</option>' +
-                            '<option value="10000">10000</option>' +
-                            '<option value="15000SD">15000</option>' +
-                        '</select><br />' +
-                        'extra: <textarea id="extra_text"></textarea>' +
+        editDiskHtml: '<div class="col disk-editing edit-disk-values">'+
+                        '<div class="item-left">Disk Index</div>' +
+                        '<div class="item-right"><input type="number" /></div>' +
+                        
+                        '<div class="item-left">Size:</div>' +
+                        '<div class="item-right"> '+
+                            '<select id="size_type_select" name="size_type">' +
+                                '<option value="2.5">2.5</option>' +
+                                '<option value="3.5">3.5</option>' +
+                            '</select>' +
+                        '</div>' +
+
+                        '<div class="item-left">Type:</div>' +
+                        '<div class="item-right"> '+
+                            '<select id="disk_type_select" name="disk_type">' +
+                                '<option value="SAT">SAT</option>' +
+                                '<option value="SATA">SATA</option>' +
+                                '<option value="SSD">SSD</option>' +
+                            '</select>' +
+                        '</div>' +
+
+                        '<div class="item-left">Rpm:</div>' +
+                        '<div class="item-right"> '+
+                            '<select id="rpm_select" name="rpm">' +
+                                '<option value="7200">7200</option>' +
+                                '<option value="10000">10000</option>' +
+                                '<option value="15000SD">15000</option>' +
+                            '</select>' +
+                        '</div>' +
+                        '<div class="item-left">Extra:</div>' +
+                        '<div class="itm-right"><textarea id="extra_text"></textarea></div>' +
                     '</div>',
         /*addMenuHandler: function() {
 
