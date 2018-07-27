@@ -188,11 +188,31 @@ $(function () {
             //this.addMenuHandler();
             
             this.element.find('#secondStepPrevious').click(this.secondStepPreviousHandler.bind(this));
+            this.element.find('#secondStepNext').click(this.secondStepNextHandler.bind(this));
         },
 
         secondStepPreviousHandler: function(event) {
             this.firstStep();
         },
+
+        secondStepNextHandler: function() {
+
+            this.thirdStep();
+        },
+
+        thirdStep: function() {
+            this.element.html(this.thirdStepHtml);
+        },
+
+        thirdStepHtml: '<div class="third-step-container">' +
+                    '<div class="title-row">' +
+                        '<div class="title">Disks configuration</div>' +
+                    '</div>' +
+                    '<div class="text-content">Congratulation</div>' +
+                    '<div class="button-container">' +
+                        '<button id="thirdStepFinish" type="button" class="btn btn-primary next">Finish</button>' +
+                    '</div>' +
+                '</div>',
 
         showRows: function() {
             
@@ -291,7 +311,8 @@ $(function () {
                 if( typeof(this.data[selector][this.data.currentlySelectedRowIndex]) === 'undefined') {
                     this.data[selector][this.data.currentlySelectedRowIndex] = [];
                 }
-                this.data[selector][this.data.currentlySelectedRowIndex].push(this.defaultDisk);
+        
+                this.data[selector][this.data.currentlySelectedRowIndex].push($.extend({}, this.defaultDisk));
                 index = this.data[selector][this.data.currentlySelectedRowIndex].length - 1;
                 
 
@@ -318,6 +339,10 @@ $(function () {
             return this.data.currentlySelectedRowIndex;
         },
 
+        getDiskIndex: function() {
+            return this.data.currentlySelectedDiskIndex;
+        },
+
         editDiskValues: function(disk) {
             //console.log($(disk).parent());
             $('.active-disk').removeClass('active-disk');
@@ -326,14 +351,23 @@ $(function () {
             this.rowClickHandler({}, $(disk).parent(), 127);
             var face = this.getFace();
             var selectedRow = this.getRowIndex();
-            diskIndex = $(disk).attr('index');
+            diskIndex = parseInt($(disk).attr('index'));
             this.data.currentlySelectedDiskIndex = diskIndex;
             this.data.currentlySelectedDiskReference = disk;
             var values = this.data[face][selectedRow][diskIndex];
-            //console.log(disk);
+            console.log(selectedRow, diskIndex);
             $('.diskSelected').html(this.editDiskHtml);
             this.autoSave();
             this.applyValues(values);
+        },
+
+        getCurrentDisk: function() {
+
+            var face = this.getFace();
+            var rowIndex = this.getRowIndex();
+            var diskIndex = this.getDiskIndex();
+            console.log(face, rowIndex, diskIndex);
+            return this.data[face][rowIndex][diskIndex];
         },
 
         editDiskHtml: '<div class="col disk-editing edit-disk-values">'+
@@ -377,7 +411,7 @@ $(function () {
         
         applyValues: function(values) {
             
-            console.log(values)
+            console.log(values);
             $("#disk_index").val(parseInt(values.disk_index));
             $("#size_type_select option[value='"+  values.size_type +"']").attr("selected", "selected");
             $("#disk_type_select option[value='"+  values.type +"']").attr("selected", "selected");
@@ -389,9 +423,36 @@ $(function () {
 
             var rowIndex = this.data.currentlySelectedRowIndex;
             var diskIndex = this.data.currentlySelectedDiskIndex;
+            var that = this;
 
             $("#disk_index").keyup(function(event) {
-                console.log("Wow", event.target.value);
+                var disk = that.getCurrentDisk();
+                disk.disk_index = event.target.value;
+            });
+
+            $("#disk_index").change(function(event) {
+                var disk = that.getCurrentDisk();
+                disk.disk_index = event.target.value;
+            });
+
+            $("#size_type_select").change(function(event) {
+                var disk = that.getCurrentDisk();
+                disk.size_type = event.target.value;
+            });
+
+            $("#disk_type_select").change(function(event) {
+                var disk = that.getCurrentDisk();
+                disk.type = event.target.value;
+            });
+
+            $("#rpm_select").change(function(event) {
+                var disk = that.getCurrentDisk();
+                disk.rpm = event.target.value;
+            });
+
+            $("#extra_text").keyup(function(event) {
+                var disk = that.getCurrentDisk();
+                disk.extra = event.target.value;
             });
         }
         
