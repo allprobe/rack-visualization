@@ -42,9 +42,9 @@ $(function () {
                             '</div>' +
                             '<div class="field-container">' +
                                 '<div class=" fields">' +
-                                    '<fieldset>' +
-                                        '<label>Number of Rows at front:</label><input type="number" class="first-step-input" max="12" id="frontRowValue">' +
-                                        '<label>Number of Rows at back:</label><input type="number" class="first-step-input" max="12" id="backRowValue">' +
+                                    '<fieldset class="first-setion-fieldset">' +
+                                        '<label>Number of Rows at front:</label><br /><input type="number" class="first-step-input" min="1" max="12" id="frontRowValue">' +
+                                        '<label>Number of Rows at back:</label><br /><input type="number" class="first-step-input" min="0" max="12" id="backRowValue">' +
                                     '</fieldset>' +
                                 '</div>' +
                                 '<div class="auto-disks">' +
@@ -62,6 +62,8 @@ $(function () {
             this.element.find('#firstStepNext').click(this.firstStepNextHandler.bind(this));
             this.element.find('#frontRowValue').keyup(this.dynamicRows.bind(this));
             this.element.find('#backRowValue').keyup(this.dynamicRows.bind(this));
+
+            this.insertDefaultValues();
 
             if( this.data !== null) {
                 var event;
@@ -88,6 +90,30 @@ $(function () {
                 }
                 
             }
+        },
+
+        insertDefaultValues: function() {
+            
+            var event = {
+                target: {
+                    value: 1,
+                    id: "frontRowValue",
+                }
+            };
+
+            this.element.find('#frontRowValue').val(1);
+            this.dynamicRows(event, "front");
+            
+            event = {
+                target: {
+                    value: 0,
+                    id: "backRowValue",
+                }
+            };
+
+            this.element.find('#backRowValue').val(0);
+            this.dynamicRows(event, "back");
+        
         },
 
         dynamicRows: function(event, face) {
@@ -140,8 +166,13 @@ $(function () {
 
         firstStepNextHandler: function(event) {
             
-            this.data.front = Array(this.data.noOfFrontRows - 1);
-            this.data.back = Array(this.data.noOfBackRows - 1);
+            var length = ( this.data.noOfFrontRows - 1 >= 0 ) ? this.data.noOfFrontRows - 1 : 0;
+
+            this.data.front = Array(length);
+
+            length = ( this.data.noOfBackRows - 1 <= 0 ) ? 0 : this.data.noOfBackRows - 1 ;
+            console.log(length);
+            this.data.back = Array(length);
 
             console.log("Heyy");
             this.secondStep();
