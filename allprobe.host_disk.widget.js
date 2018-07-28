@@ -171,7 +171,7 @@ $(function () {
             this.data.front = Array(length);
 
             length = ( this.data.noOfBackRows - 1 <= 0 ) ? 0 : this.data.noOfBackRows - 1 ;
-            console.log(length);
+            
             this.data.back = Array(length);
 
             console.log("Heyy");
@@ -216,7 +216,6 @@ $(function () {
 
             this.showRows();
             this.addRowClickHandlers();
-            //this.addMenuHandler();
             
             this.element.find('#secondStepPrevious').click(this.secondStepPreviousHandler.bind(this));
             this.element.find('#secondStepNext').click(this.secondStepNextHandler.bind(this));
@@ -256,9 +255,11 @@ $(function () {
             var html = this.generateRowHtml(event, "front");
             $('.second-section-front').html('Front: <div class="disk-container disk-container-front">' + html + '</div>');
 
-            event.target.value = this.data.noOfBackRows;
-            html = this.generateRowHtml(event, "back");
-            $('.second-section-back').html('Back: <div class="disk-container disk-container-back">' + html + '</div>');
+            if( this.data.noOfBackRows > 0) {
+                event.target.value = this.data.noOfBackRows;
+                html = this.generateRowHtml(event, "back");
+                $('.second-section-back').html('Back: <div class="disk-container disk-container-back">' + html + '</div>');
+            }
         },
 
         addRowClickHandlers: function() {
@@ -403,7 +404,7 @@ $(function () {
 
         editDiskHtml: '<div class="col disk-editing edit-disk-values">'+
                         '<div class="item-left">Disk Index</div>' +
-                        '<div class="item-right"><input id="disk_index" type="number" /></div>' +
+                        '<div class="item-right"><input id="disk_index" min="0" type="number" /></div>' +
                         
                         '<div class="item-left">Size:</div>' +
                         '<div class="item-right"> '+
