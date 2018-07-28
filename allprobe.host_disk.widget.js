@@ -232,6 +232,13 @@ $(function () {
 
         thirdStep: function() {
             this.element.html(this.thirdStepHtml);
+
+            var finalData = {
+                "front": this.data.front,
+                "back": this.data.back
+            };
+
+            alert(JSON.stringify(finalData));
         },
 
         thirdStepHtml: '<div class="third-step-container">' +
