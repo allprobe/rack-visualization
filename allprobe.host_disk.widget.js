@@ -15,11 +15,13 @@ $(function () {
         initialize: function() {
             
             this.currentStep = 1;
+            this.currentVolumeIndex = 0;
             this.data = {
                 noOfFrontRows: null,
                 noOfBackRows: null,
                 front: null,
                 back: null,
+                volume: [],
                 currentlySelectedRowIndex: null,
                 currentlySelectedRowReference: null,
                 currentlySelectedDiskIndex: null,
@@ -201,7 +203,7 @@ $(function () {
                                         
                                     '</div>' +
                                     '<div class="action-col">' +
-                                        '<div id="rowSelectedHtmlRef" class="rowSelected diskSelected"></div>' +
+                                        '<div id="rowSelectedHtmlRef" class="rowSelected diskSelected createVolumeSelected"></div>' +
                                     '</div>' +
                                 '</div>' +
                                 
@@ -235,7 +237,8 @@ $(function () {
 
             var finalData = {
                 "front": this.data.front,
-                "back": this.data.back
+                "back": this.data.back,
+                "volume": this.data.volume,
             };
 
             alert(JSON.stringify(finalData));
@@ -301,16 +304,63 @@ $(function () {
             if(! $(".row-selected-button-container")[0] ) {
                 $('.rowSelected').html(this.rowSelectedHtml);
                 this.addDiskHandler();
+                this.createVolumeHandler();
             }            
         },
         
-        rowSelectedHtml: '<div class="row-selected-button-container"><button type="button" class="btn add-disk-button btn-success">Add Disk</button></div>',
-
+        rowSelectedHtml: '<div class="row-selected-button-container"><button type="button" class="btn add-disk-button btn-success">Add Disk</button><button type="button" class="btn create-volume-button btn-success">Create Volume</button></div>',
+        addVolumeHTML: '<div class="col disk-editing edit-disk-values volume-val">' +
+                            '<div class="item-left">Name</div>' +
+                            '<div class="item-right"><input id="volume_name" type="text" /></div>' +
+                            '<div class="item-left">Type:</div>' +
+                            '<div class="item-right"> '+
+                                '<select id="volume_type_select" name="volume_size_type">' +
+                                    '<option value="none">NONE</option>' +
+                                    '<option value="raid0">raid0</option>' +
+                                    '<option value="raid1">raid1</option>' +
+                                    '<option value="raid2">raid2</option>' +
+                                    '<option value="raid3">raid3</option>' +
+                                    '<option value="raid4">raid4</option>' +
+                                    '<option value="raid5">raid5</option>' +
+                                    '<option value="raid6">raid6</option>' +
+                                '</select>' +
+                            '</div>' +
+                        '</div>',
         diskHTML: '<div class="single-disk"></div>',
                         
         addDiskHandler: function() {
             
             $('.add-disk-button').click(this.addDisk.bind(this));
+        },
+
+        createVolumeHandler: function() {
+
+            var aVolume = $.extend({}, this.defaultVolume);
+            aVolume.index = this.currentVolumeIndex;
+            this.currentVolumeIndex = this.currentVolumeIndex + 1;
+            this.data.volume.push(aVolume);
+            $('.create-volume-button').click(this.volumeHTML.bind(this));
+            
+        },
+
+        volumeHTML: function() {
+            
+            $('.createVolumeSelected').html(this.addVolumeHTML);
+            this.autoSaveCurrentVolume();
+        },
+
+        autoSaveCurrentVolume: function() {
+
+            var volume = this.data.volume[this.currentVolumeIndex - 1];
+            
+            $('#volume_name').keyup(function(evt) {
+                volume.name = evt.target.value;
+            });
+
+            $('#volume_type_select').change(function(evt) {
+                volume.type = evt.target.value;
+            });
+
         },
 
         defaultDisk: {
@@ -319,6 +369,12 @@ $(function () {
             'type': 'SAS', 
             'rpm': '10k',
             'extra' : ''
+        },
+
+        defaultVolume: {
+            index: 0,
+            name: "",
+            type: 'none',
         },
 
         addDisk: function() {
