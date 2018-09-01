@@ -368,7 +368,8 @@ $(function () {
             'size_type': '2.5', 
             'type': 'SAS', 
             'rpm': '10k',
-            'extra' : ''
+            'extra' : '',
+            'volume': 'none',
         },
 
         defaultVolume: {
@@ -451,6 +452,7 @@ $(function () {
             this.data.currentlySelectedDiskReference = disk;
             var values = this.data[face][selectedRow][diskIndex];
             console.log(selectedRow, diskIndex);
+            this.editDiskHtml = this.editDiskHtml.replace("replace_with_options", this.getVolumesOption());
             $('.diskSelected').html(this.editDiskHtml);
             this.autoSave();
             this.applyValues(values);
@@ -496,6 +498,11 @@ $(function () {
                         '</div>' +
                         '<div class="item-left">Extra:</div>' +
                         '<div class="itm-right"><textarea id="extra_text"></textarea></div>' +
+                        
+                        '<div class="item-left">Volume:</div>' +
+                        '<div class="item-right"> '+
+                            '<select id="volume_select" name="volume">replace_with_options</select>' +
+                        '</div>' +
                     '</div>',
         /*addMenuHandler: function() {
 
@@ -503,6 +510,16 @@ $(function () {
                 $(this).hide();
             });
         },*/
+        getVolumesOption: function() {
+
+            var returnHtml = '<option value="none">none</option>';
+            this.data.volume.forEach((element, index) => {
+                returnHtml = returnHtml + '<option value='+ element.index+'>'+ element.name +'</option>';
+            });
+            
+            
+            return returnHtml;
+        },
         
         applyValues: function(values) {
             
@@ -548,6 +565,12 @@ $(function () {
             $("#extra_text").keyup(function(event) {
                 var disk = that.getCurrentDisk();
                 disk.extra = event.target.value;
+            });
+
+            $("#volume_select").change(function(event) {
+                console.log(event);
+                var disk = that.getCurrentDisk();
+                disk.volume = event.target.value;
             });
         }
         
