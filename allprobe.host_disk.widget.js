@@ -325,6 +325,8 @@ $(function () {
                                     '<option value="raid6">raid6</option>' +
                                 '</select>' +
                             '</div>' +
+                            '<div class="item-left">Type:</div>' +
+                            '<div class="item-right"><input id="volume_color" value="#d30219" type="color" /></div>' +
                         '</div>',
         diskHTML: '<div class="single-disk"></div>',
                         
@@ -335,16 +337,17 @@ $(function () {
 
         createVolumeHandler: function() {
 
-            var aVolume = $.extend({}, this.defaultVolume);
-            aVolume.index = this.currentVolumeIndex;
-            this.currentVolumeIndex = this.currentVolumeIndex + 1;
-            this.data.volume.push(aVolume);
             $('.create-volume-button').click(this.volumeHTML.bind(this));
-            
+            //console.log("createVolumeHandler", this.data.volume, aVolume);
         },
 
         volumeHTML: function() {
-            
+
+            var aVolume = $.extend({}, this.defaultVolume);
+            aVolume.index = this.currentVolumeIndex;
+            aVolume.name = "Volume(" + aVolume.index + ")";
+            this.currentVolumeIndex = this.currentVolumeIndex + 1;
+            this.data.volume.push(aVolume);
             $('.createVolumeSelected').html(this.addVolumeHTML);
             this.autoSaveCurrentVolume();
         },
@@ -359,6 +362,12 @@ $(function () {
 
             $('#volume_type_select').change(function(evt) {
                 volume.type = evt.target.value;
+            });
+
+            $('#volume_color').change(function(evt) {
+                console.log("Good");
+                volume.color = evt.target.value;
+                //$(this.data.currentlySelectedDiskReference).css("backgroundColor", volume.color);
             });
 
         },
@@ -376,6 +385,7 @@ $(function () {
             index: 0,
             name: "",
             type: 'none',
+            color: '',
         },
 
         addDisk: function() {
@@ -452,8 +462,9 @@ $(function () {
             this.data.currentlySelectedDiskReference = disk;
             var values = this.data[face][selectedRow][diskIndex];
             console.log(selectedRow, diskIndex);
-            this.editDiskHtml = this.editDiskHtml.replace("replace_with_options", this.getVolumesOption());
-            $('.diskSelected').html(this.editDiskHtml);
+            var editDiskHtmlDummy = this.editDiskHtml;
+            editDiskHtmlDummy = editDiskHtmlDummy.replace("replace_with_options", this.getVolumesOption());
+            $('.diskSelected').html(editDiskHtmlDummy);
             this.autoSave();
             this.applyValues(values);
         },
@@ -516,8 +527,7 @@ $(function () {
             this.data.volume.forEach((element, index) => {
                 returnHtml = returnHtml + '<option value='+ element.index+'>'+ element.name +'</option>';
             });
-            
-            
+            console.log(this.data.volume, returnHtml);
             return returnHtml;
         },
         
@@ -529,6 +539,7 @@ $(function () {
             $("#disk_type_select option[value='"+  values.type +"']").attr("selected", "selected");
             $("#rpm_select option[value='"+  values.rpm +"']").attr("selected", "selected");
             $("#extra_text").val(values.extra);
+            $("#volume_select option[value='"+  values.volume +"']").attr("selected", "selected");
         },
 
         autoSave: function() {
@@ -571,6 +582,14 @@ $(function () {
                 console.log(event);
                 var disk = that.getCurrentDisk();
                 disk.volume = event.target.value;
+                
+                if(disk.volume === 'none') {
+                    $(that.data.currentlySelectedDiskReference).css('background-color', "burlywood");
+                } else {
+                    volumeColor = that.data.volume[disk.volume].color;
+                    $(that.data.currentlySelectedDiskReference).css('background-color', volumeColor);
+                }
+                
             });
         }
         
