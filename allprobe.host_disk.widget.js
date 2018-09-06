@@ -121,6 +121,11 @@ $(function () {
         dynamicRows: function(event, face) {
             
             var value = parseInt(event.target.value);
+            if(value > 12) {
+                alert("Please enter a value less than 13");
+                $(event.currentTarget).val(parseInt(value / 10));
+                return 0;
+            }
             var html = this.generateRowHtml(event, face);
 
             if( event.target.id === "frontRowValue") {
@@ -327,6 +332,10 @@ $(function () {
                             '</div>' +
                             '<div class="item-left">Type:</div>' +
                             '<div class="item-right"><input id="volume_color" value="#d30219" type="color" /></div>' +
+
+                            '<div class="item-left"></div>' +
+                            '<div class="item-right"><button id="doneVolume" type="button" class="btn btn-primary">Done</button></div>' +
+                        
                         '</div>',
         diskHTML: '<div class="single-disk"></div>',
                         
@@ -354,6 +363,7 @@ $(function () {
 
         autoSaveCurrentVolume: function() {
 
+            var that = this;
             var volume = this.data.volume[this.currentVolumeIndex - 1];
             
             $('#volume_name').keyup(function(evt) {
@@ -368,6 +378,10 @@ $(function () {
                 console.log("Good");
                 volume.color = evt.target.value;
                 //$(this.data.currentlySelectedDiskReference).css("backgroundColor", volume.color);
+            });
+
+            $('#doneVolume').click(function(event) {
+                that.rowClickHandler({}, that.data.currentlySelectedRowReference);
             });
 
         },
@@ -479,6 +493,7 @@ $(function () {
         },
 
         editDiskHtml: '<div class="col disk-editing edit-disk-values">'+
+                        
                         '<div class="item-left">Disk Index</div>' +
                         '<div class="item-right"><input id="disk_index" min="0" type="number" /></div>' +
                         
@@ -507,8 +522,9 @@ $(function () {
                                 '<option value="15000SD">15000</option>' +
                             '</select>' +
                         '</div>' +
-                        '<div class="item-left">Extra:</div>' +
-                        '<div class="itm-right"><textarea id="extra_text"></textarea></div>' +
+
+                        '<div class="item-left-special">Extra:</div>' +
+                        '<div class="item-right-special"><textarea id="extra_text"></textarea></div>' +
                         
                         '<div class="item-left">Volume:</div>' +
                         '<div class="item-right"> '+
