@@ -180,9 +180,38 @@ $(function () {
             length = ( this.data.noOfBackRows - 1 <= 0 ) ? 0 : this.data.noOfBackRows - 1 ;
             
             this.data.back = Array(length);
+            this.createVolume();
+            //this.secondStep();
+        },
 
-            console.log("Heyy");
-            this.secondStep();
+
+        createVolume: function() {
+
+            this.currentStep = 'volumeStep';
+            this.createVolumeStep = '<div class="volume-step-container">' +
+                                '<div class="title-row">' +
+                                    '<div class="title">Disks configuration</div>' +
+                                '</div>' +
+                                '<div class="info">' +
+                                    'Its time to create volumes.'+
+                                '</div>' +
+
+                                '<div class="field-container">' +
+                                    '<div class="fields">' +
+                        
+                                    '</div>' +
+                                    '<div class="action-col">' +
+                                        
+                                    '</div>' +
+                                '</div>' +
+                                
+                                '<div class="button-container">' +
+                                    '<button id="createVolumePrevious" type="button" class="btn btn-primary previous">Previous</button>' +
+                                    '<button id="createVolumeNext" type="button" class="btn btn-primary next">Next</button>' +
+                                '</div>' +
+                            '</div>';
+            this.element.html(this.createVolumeStep);
+
         },
 
         secondStep: function() {
@@ -193,7 +222,7 @@ $(function () {
                                 '<div class="title">Disks configuration</div>' +
                             '</div>' +
                             '<div class="info">' +
-                                'Please sekect a row to add disks. When you select a row, there appears a button to add disks. Select disks to change its parameters.'+
+                                'Please select a row to add disks. When you select a row, there appears a button to add disks. Select disks to change its parameters.'+
                             '</div>' +
                                 '<div class="field-container">' +
                                     '<div class="fields">' +
