@@ -198,10 +198,12 @@ $(function () {
 
                                 '<div class="field-container">' +
                                     '<div class="fields">' +
-                        
+                                        this.addVolumeHTML +
                                     '</div>' +
                                     '<div class="action-col">' +
-                                        
+                                        '<select size="10" class="select-box-volume" id="volumeSelector">' + 
+
+                                        '</select>' +
                                     '</div>' +
                                 '</div>' +
                                 
@@ -211,6 +213,8 @@ $(function () {
                                 '</div>' +
                             '</div>';
             this.element.html(this.createVolumeStep);
+            this.volumeHTML();
+            this.autoSaveCurrentVolume();
 
         },
 
@@ -267,6 +271,7 @@ $(function () {
         },
 
         thirdStep: function() {
+
             this.element.html(this.thirdStepHtml);
 
             var finalData = {
@@ -338,7 +343,7 @@ $(function () {
             if(! $(".row-selected-button-container")[0] ) {
                 $('.rowSelected').html(this.rowSelectedHtml);
                 this.addDiskHandler();
-                this.createVolumeHandler();
+                //this.createVolumeHandler();
             }            
         },
         
@@ -375,7 +380,7 @@ $(function () {
 
         createVolumeHandler: function() {
 
-            $('.create-volume-button').click(this.volumeHTML.bind(this));
+            //$('.create-volume-button').click(this.volumeHTML.bind(this));
             //console.log("createVolumeHandler", this.data.volume, aVolume);
         },
 
@@ -386,8 +391,10 @@ $(function () {
             aVolume.name = "Volume(" + aVolume.index + ")";
             this.currentVolumeIndex = this.currentVolumeIndex + 1;
             this.data.volume.push(aVolume);
-            $('.createVolumeSelected').html(this.addVolumeHTML);
-            this.autoSaveCurrentVolume();
+            //$('.createVolumeSelected').html(this.addVolumeHTML);
+            //this.autoSaveCurrentVolume();
+            console.log("Created");
+
         },
 
         autoSaveCurrentVolume: function() {
@@ -396,22 +403,36 @@ $(function () {
             var volume = this.data.volume[this.currentVolumeIndex - 1];
             
             $('#volume_name').keyup(function(evt) {
+                var volume = that.data.volume[that.currentVolumeIndex - 1];
                 volume.name = evt.target.value;
             });
 
             $('#volume_type_select').change(function(evt) {
+                var volume = that.data.volume[that.currentVolumeIndex - 1];
                 volume.type = evt.target.value;
             });
 
             $('#volume_color').change(function(evt) {
-                console.log("Good");
+                
+                var volume = that.data.volume[that.currentVolumeIndex - 1];
                 volume.color = evt.target.value;
                 //$(this.data.currentlySelectedDiskReference).css("backgroundColor", volume.color);
             });
 
             $('#doneVolume').click(function(event) {
-                that.rowClickHandler({}, that.data.currentlySelectedRowReference);
+                var volume = that.data.volume[that.currentVolumeIndex - 1];
+                //that.rowClickHandler({}, that.data.currentlySelectedRowReference);
+                that.volumeHTML();
+                $('#volumeSelector').append("<option value=" + volume.id + ">"+ volume.name +"</option>");
+                that.clearVolumeFields();
             });
+
+        },
+
+        clearVolumeFields: function() {
+            $('#volume_name').val("");
+            $('#volume_type_select').val("none");
+            $('#volume_color').val('#d30219');
 
         },
 
