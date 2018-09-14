@@ -368,7 +368,10 @@ $(function () {
                             '<div class="item-right"><input id="volume_color" value="#d30219" type="color" /></div>' +
 
                             '<div class="item-left"></div>' +
-                            '<div class="item-right"><button id="doneVolume" type="button" class="btn btn-primary">Done</button></div>' +
+                            '<div class="item-right">' +
+                                '<button id="doneVolume" type="button" class="btn btn-primary">Done</button>' +
+                                '<button id="deleteVolume" type="button" class="btn btn-primary delete-volume-button">Delete</button>' +
+                            '</div>' +
                         
                         '</div>',
         diskHTML: '<div class="single-disk"></div>',
@@ -419,14 +422,35 @@ $(function () {
                 //$(this.data.currentlySelectedDiskReference).css("backgroundColor", volume.color);
             });
 
-            $('#doneVolume').click(function(event) {
-                var volume = that.data.volume[that.currentVolumeIndex - 1];
-                //that.rowClickHandler({}, that.data.currentlySelectedRowReference);
-                that.volumeHTML();
-                $('#volumeSelector').append("<option value=" + volume.id + ">"+ volume.name +"</option>");
-                that.clearVolumeFields();
+            $('#volumeSelector').change(function(evt) {
+                var volumeIndex = evt.target.value;
+                var selectedVolume = that.data.volume[volumeIndex];
+                $('#volume_name').val(selectedVolume.name);
+                $('#volume_type_select').val(selectedVolume.type);
+                $('#volume_color').val(selectedVolume.color);
             });
 
+            $('#doneVolume').click(function(event) {
+
+                if($('#volumeSelector').val() === null) {
+                    // Save as new volume
+                    var volume = that.data.volume[that.currentVolumeIndex - 1];
+                    //that.rowClickHandler({}, that.data.currentlySelectedRowReference);
+                    that.volumeHTML();
+                    $('#volumeSelector').append("<option value=" + volume.index + ">"+ volume.name +"</option>");
+                    that.clearVolumeFields();
+                } else {
+                    // Edit an existing volume
+                    var volumeIndex = $('#volumeSelector').val();
+                    var selectedVolume = that.data.volume[volumeIndex];
+                    selectedVolume.name = $('#volume_name').val();
+                    $('#volumeSelector option:selected').text(selectedVolume.name);
+                    selectedVolume.type = $('#volume_type_select').val();
+                    selectedVolume.color = $('#volume_color').val();
+                    $('#volumeSelector option:selected').prop('selected', false);
+                }
+                
+            });
         },
 
         clearVolumeFields: function() {
