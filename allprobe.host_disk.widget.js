@@ -411,12 +411,13 @@ $(function () {
             });
 
             $('#volume_type_select').change(function(evt) {
+                console.log("Its changed");
                 var volume = that.data.volume[that.currentVolumeIndex - 1];
                 volume.type = evt.target.value;
             });
 
             $('#volume_color').change(function(evt) {
-                
+                console.log("Its changed");
                 var volume = that.data.volume[that.currentVolumeIndex - 1];
                 volume.color = evt.target.value;
                 //$(this.data.currentlySelectedDiskReference).css("backgroundColor", volume.color);
@@ -425,6 +426,7 @@ $(function () {
             $('#volumeSelector').change(function(evt) {
                 var volumeIndex = evt.target.value;
                 var selectedVolume = that.data.volume[volumeIndex];
+                console.log(selectedVolume);
                 $('#volume_name').val(selectedVolume.name);
                 $('#volume_type_select').val(selectedVolume.type);
                 $('#volume_color').val(selectedVolume.color);
@@ -473,7 +475,7 @@ $(function () {
             index: 0,
             name: "",
             type: 'none',
-            color: '',
+            color: '#d30219',
         },
 
         addDisk: function() {
