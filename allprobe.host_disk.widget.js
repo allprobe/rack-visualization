@@ -215,8 +215,9 @@ $(function () {
                                 '</div>' +
                             '</div>';
             this.element.html(this.createVolumeStep);
-            this.volumeHTML();
+            //this.volumeHTML();
             this.autoSaveCurrentVolume();
+            this.volumeSelectorChange();
 
         },
 
@@ -423,13 +424,27 @@ $(function () {
 
             var aVolume = $.extend({}, this.defaultVolume);
             aVolume.index = this.currentVolumeIndex;
-            aVolume.name = "Volume(" + aVolume.index + ")";
+            aVolume.name = $('#volume_name').val() || "Volume(" + aVolume.index + ")";
+            aVolume.type = $('#volume_type_select').val();
+            aVolume.color = $('#volume_color').val();
+
             this.currentVolumeIndex = this.currentVolumeIndex + 1;
             this.data.volume.push(aVolume);
-            //$('.createVolumeSelected').html(this.addVolumeHTML);
-            //this.autoSaveCurrentVolume();
-            console.log("Created");
+            return this.data.volume[this.data.volume.length - 1];
 
+        },
+
+        volumeSelectorChange: function() {
+            var that = this;
+            $('#volumeSelector').change(function(evt) {
+                that.editVolumeMode = true;
+                that.activateEditVolumeMode();
+                var selectedVolume = that.getCurrentlySelectedVolume();
+                console.log(selectedVolume);
+                $('#edit_volume_name').val(selectedVolume.name);
+                $('#edit_volume_type_select').val(selectedVolume.type);
+                $('#edit_volume_color').val(selectedVolume.color);
+            });
         },
 
         autoSaveCurrentVolume: function() {
@@ -437,7 +452,7 @@ $(function () {
             var that = this;
             var volume = this.data.volume[this.currentVolumeIndex - 1];
             
-            $('#volume_name').keyup(function(evt) {
+            /*$('#volume_name').keyup(function(evt) {
                 var volume = that.data.volume[that.currentVolumeIndex - 1];
                 volume.name = evt.target.value;
             });
@@ -453,7 +468,7 @@ $(function () {
                 var volume = that.data.volume[that.currentVolumeIndex - 1];
                 volume.color = evt.target.value;
                 //$(this.data.currentlySelectedDiskReference).css("backgroundColor", volume.color);
-            });
+            });*/
 
             $('#volumeSelector').change(function(evt) {
                 that.editVolumeMode = true;
@@ -468,22 +483,16 @@ $(function () {
 
             $('#doneVolume').click(function(event) {
 
-                if($('#volumeSelector').val() === null) {
-                    // Save as new volume
-                    var volume = that.data.volume[that.currentVolumeIndex - 1];
-                    //that.rowClickHandler({}, that.data.currentlySelectedRowReference);
-                    that.volumeHTML();
-                    $('#volumeSelector').append("<option value=" + volume.index + ">"+ volume.name +"</option>");
-                    that.clearVolumeFields();
-                } else {
-                    // Edit an existing volume
-                    
-                }
+                var volume = that.volumeHTML();
+                $('#volumeSelector').append("<option value=" + volume.index + ">"+ volume.name +"</option>");
+                that.clearVolumeFields();
+                
                 
             });
         },
 
         activateEditVolumeMode: function() {
+
             var exist = $('.fields').find('div.volume-val').length;
             if(exist > 0) {
                 console.log("Yes", $('.fields').find('div.volume-val').length);
@@ -493,6 +502,7 @@ $(function () {
         },
 
         getCurrentlySelectedVolume: function() {
+
             var volumeIndex = $('#volumeSelector').val();
             var selectedVolume = this.data.volume[volumeIndex];
             return selectedVolume;
@@ -524,6 +534,17 @@ $(function () {
                 that.updateVolume();
             });
 
+            $('#discardVolume').click(function(evt) {
+                that.discardVolume();
+            });
+
+        },
+
+        discardVolume: function() {
+
+            $('.fields').html(this.addVolumeHTML);
+            this.autoSaveCurrentVolume();
+            this.editVolumeMode = false;
         },
 
         updateVolume: function() {
