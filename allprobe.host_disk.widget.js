@@ -16,6 +16,8 @@ $(function () {
             
             this.currentStep = 1;
             this.currentVolumeIndex = 0;
+            this.editVolumeMode = false;
+
             this.data = {
                 noOfFrontRows: null,
                 noOfBackRows: null,
@@ -348,6 +350,7 @@ $(function () {
         },
         
         rowSelectedHtml: '<div class="row-selected-button-container"><button type="button" class="btn add-disk-button btn-success">Add Disk</button><button type="button" class="btn create-volume-button btn-success">Create Volume</button></div>',
+        
         addVolumeHTML: '<div class="col disk-editing edit-disk-values volume-val">' +
                             '<div class="item-left">Name</div>' +
                             '<div class="item-right"><input id="volume_name" type="text" /></div>' +
@@ -369,13 +372,42 @@ $(function () {
 
                             '<div class="item-left"></div>' +
                             '<div class="item-right">' +
-                                '<button id="doneVolume" type="button" class="btn btn-primary">Done</button>' +
-                                '<button id="deleteVolume" type="button" class="btn btn-primary delete-volume-button">Delete</button>' +
+                                '<button id="doneVolume" type="button" class="btn btn-primary">Create Volume</button>' +
                             '</div>' +
                         
                         '</div>',
+
         diskHTML: '<div class="single-disk"></div>',
+
+        editVolumeHTML: '<div class="col disk-editing edit-disk-values edit-volume-val">' +
+                            '<div class="item-left">Name</div>' +
+                            '<div class="item-right"><input id="edit_volume_name" type="text" /></div>' +
+                            '<div class="item-left">Type:</div>' +
+                            '<div class="item-right"> '+
+                                '<select id="edit_volume_type_select" name="volume_size_type">' +
+                                    '<option value="none">NONE</option>' +
+                                    '<option value="raid0">raid0</option>' +
+                                    '<option value="raid1">raid1</option>' +
+                                    '<option value="raid2">raid2</option>' +
+                                    '<option value="raid3">raid3</option>' +
+                                    '<option value="raid4">raid4</option>' +
+                                    '<option value="raid5">raid5</option>' +
+                                    '<option value="raid6">raid6</option>' +
+                                '</select>' +
+                            '</div>' +
+                            '<div class="item-left">Type:</div>' +
+                            '<div class="item-right"><input id="edit_volume_color" value="#d30219" type="color" /></div>' +
+
+                            '<div class="item-left">' +
+                                '<button id="updateVolume" type="button" class="btn btn-primary">Update</button>' +
+                            '</div>' +
+                            '<div class="item-right">' +
+                                '<button id="discardVolume" type="button" class="btn btn-primary">Discard</button>' +
+                                '<button id="deleteVolume" type="button" class="btn btn-primary">Delete</button>' +
+                            '</div>' +
                         
+                        '</div>', 
+
         addDiskHandler: function() {
             
             $('.add-disk-button').click(this.addDisk.bind(this));
@@ -424,12 +456,14 @@ $(function () {
             });
 
             $('#volumeSelector').change(function(evt) {
+                that.editVolumeMode = true;
+                that.activateEditVolumeMode();
                 var volumeIndex = evt.target.value;
                 var selectedVolume = that.data.volume[volumeIndex];
                 console.log(selectedVolume);
-                $('#volume_name').val(selectedVolume.name);
-                $('#volume_type_select').val(selectedVolume.type);
-                $('#volume_color').val(selectedVolume.color);
+                $('#edit_volume_name').val(selectedVolume.name);
+                $('#edit_volume_type_select').val(selectedVolume.type);
+                $('#edit_volume_color').val(selectedVolume.color);
             });
 
             $('#doneVolume').click(function(event) {
@@ -443,16 +477,64 @@ $(function () {
                     that.clearVolumeFields();
                 } else {
                     // Edit an existing volume
-                    var volumeIndex = $('#volumeSelector').val();
-                    var selectedVolume = that.data.volume[volumeIndex];
-                    selectedVolume.name = $('#volume_name').val();
-                    $('#volumeSelector option:selected').text(selectedVolume.name);
-                    selectedVolume.type = $('#volume_type_select').val();
-                    selectedVolume.color = $('#volume_color').val();
-                    $('#volumeSelector option:selected').prop('selected', false);
+                    
                 }
                 
             });
+        },
+
+        activateEditVolumeMode: function() {
+            var exist = $('.fields').find('div.volume-val').length;
+            if(exist > 0) {
+                console.log("Yes", $('.fields').find('div.volume-val').length);
+                $('.fields').html(this.editVolumeHTML);
+                this.addEditVolumeEvents();
+            }
+        },
+
+        getCurrentlySelectedVolume: function() {
+            var volumeIndex = $('#volumeSelector').val();
+            var selectedVolume = this.data.volume[volumeIndex];
+            return selectedVolume;
+        },
+
+        addEditVolumeEvents: function() {
+            var that = this;
+            //var volume = this.data.volume[this.currentVolumeIndex - 1];
+            
+            $('#edit_volume_name').keyup(function(evt) {
+                var volume = that.getCurrentlySelectedVolume();
+                volume.name = evt.target.value;
+            });
+
+            $('#edit_volume_type_select').change(function(evt) {
+                console.log("Its changed");
+                var volume = that.getCurrentlySelectedVolume();
+                volume.type = evt.target.value;
+            });
+
+            $('#edit_volume_color').change(function(evt) {
+                console.log("Its changed");
+                var volume = that.getCurrentlySelectedVolume();
+                volume.color = evt.target.value;
+                //$(this.data.currentlySelectedDiskReference).css("backgroundColor", volume.color);
+            });
+
+            $('#updateVolume').click(function(evt) {
+                that.updateVolume();
+            });
+
+        },
+
+        updateVolume: function() {
+            
+            var selectedVolume = this.getCurrentlySelectedVolume();
+            selectedVolume.name = $('#edit_volume_name').val();
+            $('#volumeSelector option:selected').text(selectedVolume.name);
+            selectedVolume.type = $('#edit_volume_type_select').val();
+            selectedVolume.color = $('#edit_volume_color').val();
+            $('#volumeSelector option:selected').prop('selected', false);
+            
         },
 
         clearVolumeFields: function() {
