@@ -214,10 +214,26 @@ $(function () {
                                     '<button id="createVolumeNext" type="button" class="btn btn-primary next">Next</button>' +
                                 '</div>' +
                             '</div>';
+
             this.element.html(this.createVolumeStep);
-            //this.volumeHTML();
             this.autoSaveCurrentVolume();
             this.volumeSelectorChange();
+            this.volumeNextAndPrevious();
+            if(this.data.volume.length > 0) {
+                this.reWorkVolumeDetails();
+            }
+        },
+
+        volumeNextAndPrevious: function() {
+
+            var that = this;
+            $('#createVolumePrevious').click(function(evt) {
+                that.firstStep();
+            });
+
+            $('#createVolumeNext').click(function(evt) {
+                that.secondStep();
+            });
 
         },
 
@@ -265,7 +281,7 @@ $(function () {
         },
 
         secondStepPreviousHandler: function(event) {
-            this.firstStep();
+            this.createVolume();
         },
 
         secondStepNextHandler: function() {
@@ -350,7 +366,7 @@ $(function () {
             }            
         },
         
-        rowSelectedHtml: '<div class="row-selected-button-container"><button type="button" class="btn add-disk-button btn-success">Add Disk</button><button type="button" class="btn create-volume-button btn-success">Create Volume</button></div>',
+        rowSelectedHtml: '<div class="row-selected-button-container"><button type="button" class="btn add-disk-button btn-success">Add Disk</button></div>',
         
         addVolumeHTML: '<div class="col disk-editing edit-disk-values volume-val">' +
                             '<div class="volume-message">Create new Volume</div>' +
