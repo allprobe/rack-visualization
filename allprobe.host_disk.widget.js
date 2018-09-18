@@ -66,12 +66,18 @@ $(function () {
             this.element.find('#firstStepNext').click(this.firstStepNextHandler.bind(this));
             this.element.find('#frontRowValue').keyup(this.dynamicRows.bind(this));
             this.element.find('#backRowValue').keyup(this.dynamicRows.bind(this));
-
-            this.insertDefaultValues();
+            
+            if(this.data.front === null && this.data.back === null) {
+                console.log("Here I am ");
+                this.insertDefaultValues();
+            }
+            
 
             if( this.data !== null) {
+                
                 var event;
                 if(this.data.noOfFrontRows !== null) {
+                    console.log("hey js", this.data.noOfFrontRows);
                     event = {
                         target: {
                             id: "frontRowValue",
@@ -94,6 +100,17 @@ $(function () {
                 }
                 
             }
+        },
+
+        firstStepToChange: function() {
+
+            /*this.currentStep = 1;
+            this.element.html(this.firstStepHtml);
+            this.element.find('#firstStepNext').click(this.firstStepNextHandler.bind(this));
+            this.element.find('#frontRowValue').keyup(this.dynamicRows.bind(this));
+            this.element.find('#backRowValue').keyup(this.dynamicRows.bind(this));*/
+            this.firstStep();
+
         },
 
         insertDefaultValues: function() {
@@ -175,17 +192,59 @@ $(function () {
 
         firstStepNextHandler: function(event) {
             
-            var length = ( this.data.noOfFrontRows - 1 >= 0 ) ? this.data.noOfFrontRows - 1 : 0;
+            if(this.data.front === null && this.data.back === null) {
+                var length = ( this.data.noOfFrontRows - 1 >= 0 ) ? this.data.noOfFrontRows - 1 : 0;
 
-            this.data.front = Array(length);
+                this.data.front = Array(length);
 
-            length = ( this.data.noOfBackRows - 1 <= 0 ) ? 0 : this.data.noOfBackRows - 1 ;
+                length = ( this.data.noOfBackRows - 1 <= 0 ) ? 0 : this.data.noOfBackRows - 1 ;
             
-            this.data.back = Array(length);
+                this.data.back = Array(length);
+                this.createVolume();
+                return;
+            }
+
+            var diff;
+
+            this.updateForChangeInFrontRows();
+            this.updateForChangeInBackRows();
+
             this.createVolume();
+            return;
+            
             //this.secondStep();
         },
 
+        updateForChangeInFrontRows: function() {
+            
+            if(this.data.noOfFrontRows > this.data.front.length) {
+                diff = this.data.noOfFrontRows - this.data.front.length;
+                for(var i = 0; i < diff; i++) {
+                    this.data.front.push([]);
+                }
+            } 
+
+            if(this.data.noOfFrontRows < this.data.front.length) {
+                diff = this.data.front.length - this.data.noOfFrontRows;
+                this.data.front.splice(-1, diff);
+            }
+        },
+
+        updateForChangeInBackRows: function() {
+
+            if(this.data.noOfBackRows > this.data.back.length) {
+                diff = this.data.noOfBackRows - this.data.back.length;
+                for(var i = 0; i < diff; i++) {
+                    this.data.back.push([]);
+                }
+            } 
+
+            if(this.data.noOfBackRows < this.data.back.length) {
+                diff = this.data.back.length - this.data.noOfBackRows;
+                this.data.back.splice(-1, diff);
+            }
+
+        },
 
         createVolume: function() {
 
@@ -228,7 +287,7 @@ $(function () {
 
             var that = this;
             $('#createVolumePrevious').click(function(evt) {
-                that.firstStep();
+                that.firstStepToChange();
             });
 
             $('#createVolumeNext').click(function(evt) {
