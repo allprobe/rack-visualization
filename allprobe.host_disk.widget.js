@@ -275,7 +275,8 @@ $(function () {
 
             this.showRows();
             this.addRowClickHandlers();
-            
+            this.showDisks();
+
             this.element.find('#secondStepPrevious').click(this.secondStepPreviousHandler.bind(this));
             this.element.find('#secondStepNext').click(this.secondStepNextHandler.bind(this));
         },
@@ -330,27 +331,59 @@ $(function () {
             }
         },
 
+        showDisks: function() {
+            var that = this;
+            this.data.front.forEach(function(arValue, index) {
+                
+                if(arValue.length > 0) {
+                    $($('.second-section-front').find('.disk')[index]).click();
+                    arValue.forEach(function(val, index) {
+                        var DH = that.addDisk(true, index);
+                        if(val.volume !== 'none') {
+                            
+                            volumeColor = that.data.volume[val.volume].color;
+                            $(DH).css('background-color', volumeColor);
+                            
+                        }
+                    }); 
+                }
+            });
+
+            this.data.back.forEach(function(arValue, index) {
+                
+                if(arValue.length > 0) {
+                    $($('.second-section-back').find('.disk')[index]).click();
+                    arValue.forEach(function(val, index) {
+                        var DH = that.addDisk(true, index);
+                        if(val.volume !== 'none') {
+                            
+                            volumeColor = that.data.volume[val.volume].color;
+                            $(DH).css('background-color', volumeColor);
+                            
+                        }
+                    }); 
+                }
+            });
+        },
+
         addRowClickHandlers: function() {
+
             var that = this;
             $('.second-section-front').find('.disk').each(function(index, disk) {
                 $(disk).click(function(event) {
-                    that.rowClickHandler(event, this, 7);
+                    that.rowClickHandler(this);
                 });
             });
 
             $('.second-section-back').find('.disk').each(function(index, disk) {
                 $(disk).click(function(event) {
-                    that.rowClickHandler(event, this, 127);
+                    that.rowClickHandler(this);
                 });
             });
         },
 
-        rowClickHandler: function(event, row, left) {
+        rowClickHandler: function(row) {
             
-            /*$('.fields').find('.dropdown-menu')
-            .css({left: left, top: event.pageY - 45})
-            .show();*/
-            //console.log(this.rowSelectedHtml);
             console.log(row);
             this.data.currentlySelectedRowReference = row;
             this.data.currentlySelectedRowIndex = parseInt($(row).attr("index"));
@@ -429,7 +462,7 @@ $(function () {
 
         addDiskHandler: function() {
             
-            $('.add-disk-button').click(this.addDisk.bind(this));
+            $('.add-disk-button').click(this.addDisk.bind(this, false, null));
         },
 
         createVolumeHandler: function() {
@@ -446,7 +479,6 @@ $(function () {
             aVolume.type = $('#volume_type_select').val();
             aVolume.color = $('#volume_color').val();
 
-            //this.currentVolumeIndex = this.data.volume.length;
             this.data.volume.push(aVolume);
             return this.data.volume[this.data.volume.length - 1];
 
@@ -468,37 +500,7 @@ $(function () {
         autoSaveCurrentVolume: function() {
 
             var that = this;
-            //var volume = this.data.volume[this.currentVolumeIndex - 1];
             
-            /*$('#volume_name').keyup(function(evt) {
-                var volume = that.data.volume[that.currentVolumeIndex - 1];
-                volume.name = evt.target.value;
-            });
-
-            $('#volume_type_select').change(function(evt) {
-                console.log("Its changed");
-                var volume = that.data.volume[that.currentVolumeIndex - 1];
-                volume.type = evt.target.value;
-            });
-
-            $('#volume_color').change(function(evt) {
-                console.log("Its changed");
-                var volume = that.data.volume[that.currentVolumeIndex - 1];
-                volume.color = evt.target.value;
-                //$(this.data.currentlySelectedDiskReference).css("backgroundColor", volume.color);
-            });*/
-
-            /*$('#volumeSelector').change(function(evt) {
-                that.editVolumeMode = true;
-                that.activateEditVolumeMode();
-                var volumeIndex = evt.target.value;
-                var selectedVolume = that.data.volume[volumeIndex];
-                console.log(selectedVolume);
-                $('#edit_volume_name').val(selectedVolume.name);
-                $('#edit_volume_type_select').val(selectedVolume.type);
-                $('#edit_volume_color').val(selectedVolume.color);
-            });*/
-
             $('#doneVolume').click(function(event) {
 
                 var volume = that.volumeHTML();
@@ -536,26 +538,7 @@ $(function () {
 
         addEditVolumeEvents: function() {
             var that = this;
-            //var volume = this.data.volume[this.currentVolumeIndex - 1];
             
-            /*$('#edit_volume_name').keyup(function(evt) {
-                var volume = that.getCurrentlySelectedVolume();
-                volume.name = evt.target.value;
-            });
-
-            $('#edit_volume_type_select').change(function(evt) {
-                console.log("Its changed");
-                var volume = that.getCurrentlySelectedVolume();
-                volume.type = evt.target.value;
-            });
-
-            $('#edit_volume_color').change(function(evt) {
-                console.log("Its changed");
-                var volume = that.getCurrentlySelectedVolume();
-                volume.color = evt.target.value;
-                //$(this.data.currentlySelectedDiskReference).css("backgroundColor", volume.color);
-            });*/
-
             $('#updateVolume').click(function(evt) {
                 that.updateVolume();
                 that.discardVolume();
@@ -606,7 +589,6 @@ $(function () {
             $('#volumeSelector option:selected').text(selectedVolume.name);
             selectedVolume.type = $('#edit_volume_type_select').val();
             selectedVolume.color = $('#edit_volume_color').val();
-            //$('#volumeSelector option:selected').prop('selected', false);
             
         },
 
@@ -633,44 +615,31 @@ $(function () {
             color: '#d30219',
         },
 
-        addDisk: function() {
-            
+        addDisk: function(automatic, automaticIndex) {
+            var that = this;
             if( $(this.data.currentlySelectedRowReference).find(".single-disk").length <= 11 ) {
                 
                 var index = 0;
-                //var face = $(this.data.currentlySelectedRowReference).attr("face");
+
                 var selector = $(this.data.currentlySelectedRowReference).attr("face");
                 
-
-                
-                /*if($(this.data.currentlySelectedRowReference).attr("face") === "front") {
-                    
-                    if( typeof(this.data.front[this.data.currentlySelectedRowIndex]) === 'undefined') {
-                        this.data.front[this.data.currentlySelectedRowIndex] = [];
-                    }
-                    this.data.front[this.data.currentlySelectedRowIndex].push(this.defaultDisk);
-                    index = this.data.front[this.data.currentlySelectedRowIndex].length - 1;
-
-                } else {
-                    if( typeof(this.data.back[this.data.currentlySelectedRowIndex]) === 'undefined') {
-                        this.data.back[this.data.currentlySelectedRowIndex] = [];
-                    }
-                    this.data.back[this.data.currentlySelectedRowIndex].push(this.defaultDisk);
-                    index = this.data.back[this.data.currentlySelectedRowIndex].length - 1;
-                }*/
-
                 if( typeof(this.data[selector][this.data.currentlySelectedRowIndex]) === 'undefined') {
                     this.data[selector][this.data.currentlySelectedRowIndex] = [];
                 }
-        
-                this.data[selector][this.data.currentlySelectedRowIndex].push($.extend({}, this.defaultDisk));
-                index = this.data[selector][this.data.currentlySelectedRowIndex].length - 1;
-                
 
-                var that = this;
+                if(! automatic) {
+                    console.log("Checkpoint 1");
+                    this.data[selector][this.data.currentlySelectedRowIndex].push($.extend({}, this.defaultDisk));
+                    index = this.data[selector][this.data.currentlySelectedRowIndex].length - 1;
+                } else {
+                    index = automaticIndex;
+                }
+               console.log(this.data.back, this.data.front);
+                
 
                 var diskHtml = $(this.diskHTML).attr("index", index)
                     .click(function(event) {
+                        
                         event.stopPropagation();
                         that.editDiskValues(this);
                     });
@@ -678,7 +647,8 @@ $(function () {
                 $(this.data.currentlySelectedRowReference)
                     .append(diskHtml);
 
-                console.log(this.data.back, this.data.front);
+                return diskHtml;    
+                
             }  
         },
 
@@ -695,11 +665,12 @@ $(function () {
         },
 
         editDiskValues: function(disk) {
-            //console.log($(disk).parent());
+            
+            console.log(this.getFace());
             $('.active-disk').removeClass('active-disk');
             $(disk).addClass('active-disk');
 
-            this.rowClickHandler({}, $(disk).parent(), 127);
+            this.rowClickHandler($(disk).parent());
             var face = this.getFace();
             var selectedRow = this.getRowIndex();
             diskIndex = parseInt($(disk).attr('index'));
@@ -762,12 +733,7 @@ $(function () {
                             '<select id="volume_select" name="volume">replace_with_options</select>' +
                         '</div>' +
                     '</div>',
-        /*addMenuHandler: function() {
-
-            $('.dropdown-menu').mouseleave(function(event) {
-                $(this).hide();
-            });
-        },*/
+        
         getVolumesOption: function() {
 
             var returnHtml = '<option value="none">none</option>';
