@@ -208,7 +208,6 @@ $(function () {
             this.createVolume();
             return;
             
-            //this.secondStep();
         },
 
         updateForChangeInFrontRows: function() {
@@ -292,7 +291,7 @@ $(function () {
             });
 
             $('#createVolumeNext').click(function(evt) {
-                that.secondStep();
+                that.diskStep();
             });
 
         },
@@ -489,14 +488,27 @@ $(function () {
 
         },
         
+        getVolumesOption: function() {
+
+            var returnHtml = '<option value="none">none</option>';
+            this.data.volume.forEach((element, index) => {
+                returnHtml = returnHtml + '<option value='+ element.index+'>'+ element.name +'</option>';
+            });
+            console.log(this.data.volume, returnHtml);
+            return returnHtml;
+        },
             
         /**
          * End of Volume Step
          */
-        secondStep: function() {
+
+         /**
+          * ThirdStep Starts here which manages disks.
+          */
+        diskStep: function() {
 
             this.currentStep = 2;
-            this.secondStepHtml = '<div class="second-step-container">' + 
+            this.diskStepHtml = '<div class="disk-step-container">' + 
                             '<div class="title-row">' +
                                 '<div class="title">Disks configuration</div>' +
                             '</div>' +
@@ -508,10 +520,10 @@ $(function () {
 
                                         
                                         
-                                            '<div class=" divide second-section-front"></div>' +
+                                            '<div class=" divide disk-section-front"></div>' +
                                         
                                         
-                                            '<div class="divide second-section-back"></div>' +
+                                            '<div class="divide disk-section-back"></div>' +
                                         
                                         
                                     '</div>' +
@@ -521,27 +533,27 @@ $(function () {
                                 '</div>' +
                                 
                                 '<div class="button-container">' +
-                                    '<button id="secondStepPrevious" type="button" class="btn btn-primary previous">Previous</button>' +
-                                    '<button id="secondStepNext" type="button" class="btn btn-primary next">Next</button>' +
+                                    '<button id="diskStepPrevious" type="button" class="btn btn-primary previous">Previous</button>' +
+                                    '<button id="diskStepNext" type="button" class="btn btn-primary next">Next</button>' +
                                 '</div>' +
                                 
                             '</div>';
 
-            this.element.html(this.secondStepHtml);
+            this.element.html(this.diskStepHtml);
 
             this.showRows();
             this.addRowClickHandlers();
             this.showDisks();
 
-            this.element.find('#secondStepPrevious').click(this.secondStepPreviousHandler.bind(this));
-            this.element.find('#secondStepNext').click(this.secondStepNextHandler.bind(this));
+            this.element.find('#diskStepPrevious').click(this.diskStepPreviousHandler.bind(this));
+            this.element.find('#diskStepNext').click(this.diskStepNextHandler.bind(this));
         },
 
-        secondStepPreviousHandler: function(event) {
+        diskStepPreviousHandler: function(event) {
             this.createVolume();
         },
 
-        secondStepNextHandler: function() {
+        diskStepNextHandler: function() {
 
             this.thirdStep();
         },
@@ -578,12 +590,12 @@ $(function () {
             };
             
             var html = this.generateRowHtml(event, "front");
-            $('.second-section-front').html('Front: <div class="disk-container disk-container-front">' + html + '</div>');
+            $('.disk-section-front').html('Front: <div class="disk-container disk-container-front">' + html + '</div>');
 
             if( this.data.noOfBackRows > 0) {
                 event.target.value = this.data.noOfBackRows;
                 html = this.generateRowHtml(event, "back");
-                $('.second-section-back').html('Back: <div class="disk-container disk-container-back">' + html + '</div>');
+                $('.disk-section-back').html('Back: <div class="disk-container disk-container-back">' + html + '</div>');
             }
         },
 
@@ -592,7 +604,7 @@ $(function () {
             this.data.front.forEach(function(arValue, index) {
                 
                 if(arValue.length > 0) {
-                    $($('.second-section-front').find('.disk')[index]).click();
+                    $($('.disk-section-front').find('.disk')[index]).click();
                     arValue.forEach(function(val, index) {
                         var DH = that.addDisk(true, index);
                         if(val.volume !== 'none') {
@@ -608,7 +620,7 @@ $(function () {
             this.data.back.forEach(function(arValue, index) {
                 
                 if(arValue.length > 0) {
-                    $($('.second-section-back').find('.disk')[index]).click();
+                    $($('.disk-section-back').find('.disk')[index]).click();
                     arValue.forEach(function(val, index) {
                         var DH = that.addDisk(true, index);
                         if(val.volume !== 'none') {
@@ -625,13 +637,13 @@ $(function () {
         addRowClickHandlers: function() {
 
             var that = this;
-            $('.second-section-front').find('.disk').each(function(index, disk) {
+            $('.disk-section-front').find('.disk').each(function(index, disk) {
                 $(disk).click(function(event) {
                     that.rowClickHandler(this);
                 });
             });
 
-            $('.second-section-back').find('.disk').each(function(index, disk) {
+            $('.disk-section-back').find('.disk').each(function(index, disk) {
                 $(disk).click(function(event) {
                     that.rowClickHandler(this);
                 });
@@ -651,7 +663,6 @@ $(function () {
             if(! $(".row-selected-button-container")[0] ) {
                 $('.rowSelected').html(this.rowSelectedHtml);
                 this.addDiskHandler();
-                //this.createVolumeHandler();
             }            
         },
         
@@ -675,9 +686,8 @@ $(function () {
             'volume': 'none',
         },
 
-        
-
         addDisk: function(automatic, automaticIndex) {
+            
             var that = this;
             if( $(this.data.currentlySelectedRowReference).find(".single-disk").length <= 11 ) {
                 
@@ -796,15 +806,6 @@ $(function () {
                         '</div>' +
                     '</div>',
         
-        getVolumesOption: function() {
-
-            var returnHtml = '<option value="none">none</option>';
-            this.data.volume.forEach((element, index) => {
-                returnHtml = returnHtml + '<option value='+ element.index+'>'+ element.name +'</option>';
-            });
-            console.log(this.data.volume, returnHtml);
-            return returnHtml;
-        },
         
         applyValues: function(values) {
             
