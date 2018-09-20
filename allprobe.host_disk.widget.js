@@ -446,11 +446,27 @@ $(function () {
         deleteVolume: function() {
 
             var index = this.getCurrentlySelectedVolumeIndex();
+            this.removeVolumeReferenceFromDisks(index, "front");
+            this.removeVolumeReferenceFromDisks(index, "back");
             this.data.volume.splice(index, 1);
             $('#volumeSelector').empty();
             this.reWorkVolumeDetails();
             this.discardVolume();
+            
         },
+
+        removeVolumeReferenceFromDisks: function(volumeIndexToBeDeleted, face) {
+
+            this.data[face].forEach(function(rowArray, rowIndex) {
+
+                rowArray.forEach(function(disk, diskIndex) {
+                    if(disk.volume === volumeIndexToBeDeleted) {
+                        disk.volume = 'none';
+                    }
+                });
+            });
+        },
+        
 
         reWorkVolumeDetails: function() {
             
@@ -687,7 +703,7 @@ $(function () {
         },
 
         addDisk: function(automatic, automaticIndex) {
-            
+
             var that = this;
             if( $(this.data.currentlySelectedRowReference).find(".single-disk").length <= 11 ) {
                 
