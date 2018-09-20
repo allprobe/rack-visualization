@@ -587,16 +587,6 @@ $(function () {
             alert(JSON.stringify(finalData));
         },
 
-        thirdStepHtml: '<div class="third-step-container">' +
-                    '<div class="title-row">' +
-                        '<div class="title">Disks configuration</div>' +
-                    '</div>' +
-                    '<div class="text-content">Congratulation</div>' +
-                    '<div class="button-container">' +
-                        '<button id="thirdStepFinish" type="button" class="btn btn-primary next">Finish</button>' +
-                    '</div>' +
-                '</div>',
-
         showRows: function() {
             
             var event = {
@@ -677,6 +667,7 @@ $(function () {
             $(row).addClass("active-row");
 
             if(! $(".row-selected-button-container")[0] ) {
+                console.log("This is the place");
                 $('.rowSelected').html(this.rowSelectedHtml);
                 this.addDiskHandler();
             }            
@@ -809,7 +800,7 @@ $(function () {
                             '<select id="rpm_select" name="rpm">' +
                                 '<option value="7200">7200</option>' +
                                 '<option value="10000">10000</option>' +
-                                '<option value="15000SD">15000</option>' +
+                                '<option value="15000">15000</option>' +
                             '</select>' +
                         '</div>' +
 
@@ -820,12 +811,16 @@ $(function () {
                         '<div class="item-right"> '+
                             '<select id="volume_select" name="volume">replace_with_options</select>' +
                         '</div>' +
+
+                        '<div class="item-left"><button id="deleteSelectedDisk" type="button" class="btn btn-primary">Delete</button></div>' +
+                        '<div class="item-right"> '+
+                            '<button id="updateSelectedDisk" type="button" class="btn btn-primary">Update</button>' +
+                        '</div>' +
                     '</div>',
         
         
         applyValues: function(values) {
             
-            console.log(values);
             $("#disk_index").val(parseInt(values.disk_index));
             $("#size_type_select option[value='"+  values.size_type +"']").attr("selected", "selected");
             $("#disk_type_select option[value='"+  values.type +"']").attr("selected", "selected");
@@ -871,7 +866,7 @@ $(function () {
             });
 
             $("#volume_select").change(function(event) {
-                console.log(event);
+                
                 var disk = that.getCurrentDisk();
                 disk.volume = event.target.value;
                 
@@ -883,7 +878,31 @@ $(function () {
                 }
                 
             });
+
+            $("#deleteSelectedDisk").click(function(event) {
+
+                var face = that.getFace();
+                var rowIndex = that.getRowIndex();
+                var diskIndex = that.getDiskIndex();
+
+                that.data[face][rowIndex].splice(diskIndex, 1);
+                $(that.data.currentlySelectedDiskReference).remove();
+                
+                $.each($('.active-row').find('.single-disk'), function(index, disk) {
+                    $(disk).attr("index", index);
+                });
+
+                $('.rowSelected').html(that.rowSelectedHtml);
+                that.addDiskHandler();
+            });
+
+            $("#updateSelectedDisk").click(function(event) {
+                $('.rowSelected').html(that.rowSelectedHtml);
+                that.addDiskHandler();
+            });
         }
+
+
         
     });
 });
