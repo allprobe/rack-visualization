@@ -268,7 +268,7 @@ $(function () {
                                     '</div>' +
                                 '</div>' +
                                 
-                                '<div class="button-container">' +
+                                '<div class="button-container create-volume-button-container">' +
                                     '<button id="createVolumePrevious" type="button" class="btn btn-primary previous">Previous</button>' +
                                     '<button id="createVolumeNext" type="button" class="btn btn-primary next">Next</button>' +
                                 '</div>' +
