@@ -29,12 +29,12 @@ $(function () {
                 currentlySelectedDiskReference: null,
             };
 
-            console.log("Okay");
         },
 
-        /** First Step 
-         * 
+        /** 
+         * First Step 
         */
+
         firstStep: function() {
 
             this.currentStep = 1;
@@ -510,7 +510,7 @@ $(function () {
             this.data.volume.forEach((element, index) => {
                 returnHtml = returnHtml + '<option value='+ element.index+'>'+ element.name +'</option>';
             });
-            console.log(this.data.volume, returnHtml);
+            
             return returnHtml;
         },
             
@@ -658,7 +658,6 @@ $(function () {
 
         rowClickHandler: function(row) {
             
-            console.log(row);
             this.data.currentlySelectedRowReference = row;
             this.data.currentlySelectedRowIndex = parseInt($(row).attr("index"));
             
@@ -707,7 +706,7 @@ $(function () {
                 }
 
                 if(! automatic) {
-                    console.log("Checkpoint 1");
+                    
                     this.data[selector][this.data.currentlySelectedRowIndex].push($.extend({}, this.defaultDisk));
                     index = this.data[selector][this.data.currentlySelectedRowIndex].length - 1;
                 } else {
@@ -745,7 +744,6 @@ $(function () {
 
         editDiskValues: function(disk) {
             
-            console.log(this.getFace());
             $('.active-disk').removeClass('active-disk');
             $(disk).addClass('active-disk');
 
