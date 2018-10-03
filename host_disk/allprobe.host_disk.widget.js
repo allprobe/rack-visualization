@@ -16,7 +16,7 @@ $(function () {
             
             this.currentStep = 1;
             this.editVolumeMode = false;
-
+            
             this.data = {
                 noOfFrontRows: null,
                 noOfBackRows: null,
@@ -29,6 +29,37 @@ $(function () {
                 currentlySelectedDiskReference: null,
             };
 
+            if(this.options.data) {
+
+                var diskData = this.options.data;
+                
+                diskData.front.forEach(function(row, index) {
+                    
+                    if(row === null) {
+                        diskData.front[index] = [];
+                    }
+                });
+                
+                diskData.back.forEach(function(row, index) {
+                    if(row === null) {
+                        diskData.back[index] = [];
+                    }
+                });
+
+                this.data = {
+                    noOfFrontRows: diskData.front.length,
+                    noOfBackRows: diskData.back.length,
+                    front: diskData.front,
+                    back: diskData.back,
+                    volume: diskData.volume,
+                    currentlySelectedRowIndex: null,
+                    currentlySelectedRowReference: null,
+                    currentlySelectedDiskIndex: null,
+                    currentlySelectedDiskReference: null,
+                };
+                console.log(this.data);
+            }
+            
         },
 
         /** 
@@ -583,7 +614,7 @@ $(function () {
                 "back": this.data.back,
                 "volume": this.data.volume,
             };
-
+            console.log(JSON.stringify(finalData));
             alert(JSON.stringify(finalData));
         },
 
@@ -606,10 +637,11 @@ $(function () {
         },
 
         showDisks: function() {
+            
             var that = this;
             this.data.front.forEach(function(arValue, index) {
                 
-                if(arValue.length > 0) {
+                if(arValue !== null && arValue.length > 0) {
                     $($('.disk-section-front').find('.disk')[index]).click();
                     arValue.forEach(function(val, index) {
                         var DH = that.addDisk(true, index);
@@ -625,7 +657,7 @@ $(function () {
 
             this.data.back.forEach(function(arValue, index) {
                 
-                if(arValue.length > 0) {
+                if(arValue !== null && arValue.length > 0) {
                     $($('.disk-section-back').find('.disk')[index]).click();
                     arValue.forEach(function(val, index) {
                         var DH = that.addDisk(true, index);
