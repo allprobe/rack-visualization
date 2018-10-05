@@ -821,7 +821,6 @@ $(function () {
                         '<div class="item-left">Type:</div>' +
                         '<div class="item-right"> '+
                             '<select id="disk_type_select" name="disk_type">' +
-                                '<option value="SAT">SAT</option>' +
                                 '<option value="SATA">SATA</option>' +
                                 '<option value="SSD">SSD</option>' +
                                 '<option value="SAS">SAS</option>' +
