@@ -32,31 +32,32 @@ $(function () {
             if(this.options.data) {
 
                 var diskData = this.options.data;
-                
-                diskData.front.forEach(function(row, index) {
-                    
-                    if(row === null) {
-                        diskData.front[index] = [];
-                    }
-                });
-                
-                diskData.back.forEach(function(row, index) {
-                    if(row === null) {
-                        diskData.back[index] = [];
-                    }
-                });
 
-                this.data = {
-                    noOfFrontRows: diskData.front.length,
-                    noOfBackRows: diskData.back.length,
-                    front: diskData.front,
-                    back: diskData.back,
-                    volume: diskData.volume,
-                    currentlySelectedRowIndex: null,
-                    currentlySelectedRowReference: null,
-                    currentlySelectedDiskIndex: null,
-                    currentlySelectedDiskReference: null,
-                };
+                if(diskData.front) {
+                    diskData.front.forEach(function(row, index) {
+                    
+                        if(row === null) {
+                            diskData.front[index] = [];
+                        }
+                    });
+                    this.data.noOfFrontRows = diskData.front.length;
+                    this.data.front = diskData.front; 
+                }
+                
+                if(diskData.back) {
+                    diskData.back.forEach(function(row, index) {
+                        if(row === null) {
+                            diskData.back[index] = [];
+                        }
+                    });
+                    this.data.noOfBackRows = diskData.back.length;
+                    this.data.back = diskData.back;    
+                }
+                
+                if(diskData.volume) {
+                    this.data.volume = diskData.volume;
+                }
+                
                 console.log(this.data);
             }
             
