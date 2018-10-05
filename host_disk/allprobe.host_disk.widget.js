@@ -728,7 +728,7 @@ $(function () {
         addDisk: function(automatic, automaticIndex) {
 
             var that = this;
-            if( $(this.data.currentlySelectedRowReference).find(".single-disk").length <= 11 ) {
+            if( $(this.data.currentlySelectedRowReference).find(".single-disk").length <= 23 ) {
                 
                 var index = 0;
 
