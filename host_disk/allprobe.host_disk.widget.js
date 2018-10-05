@@ -616,7 +616,8 @@ $(function () {
                 "volume": this.data.volume,
             };
             console.log(JSON.stringify(finalData));
-            alert(JSON.stringify(finalData));
+            //alert(JSON.stringify(finalData));
+            return finalData;
         },
 
         showRows: function() {

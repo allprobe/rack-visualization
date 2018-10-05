@@ -10,6 +10,7 @@
         <!--Copy code HTML from here -->
         
         <div class="container">
+            <button id="getData">Final Object</button>
             
                 <div class="host_disk_wizard_container">
                     <!--<div class="first-step-container step">
@@ -59,7 +60,7 @@
         <script src="https://cdn.allprobe.com/js/jquery-ui/jquery-ui.min.js"></script>
         
         <script src="https://cdn.allprobe.com/js/bootstrap.min.js"></script>
-        <script src="./allprobe.host_disk.widget.js"></script>
+        <script src="https://cdn.allprobe.com/js/allprobe.host_disk.widget.js"></script>
     </body>
 </html>
 
@@ -333,11 +334,20 @@
 
     $(function() {
 
+        
         $(".host_disk_wizard_container").hostDisk(
             {
                 data:{"front":[[{"disk_index":"0","size_type":"2.5","type":"SAS","rpm":"10k","extra":"","volume":"none"},{"disk_index":"0","size_type":"2.5","type":"SAS","rpm":"10k","extra":"","volume":"none"}],[],[],[{"disk_index":"0","size_type":"2.5","type":"SAS","rpm":"10k","extra":"","volume":"none"},{"disk_index":"0","size_type":"2.5","type":"SAS","rpm":"10k","extra":"","volume":"none"},{"disk_index":"0","size_type":"2.5","type":"SAS","rpm":"10k","extra":"","volume":"0"},{"disk_index":"0","size_type":"2.5","type":"SAS","rpm":"10k","extra":"","volume":"none"}],[],[],[],[],[],[{"disk_index":"0","size_type":"2.5","type":"SAS","rpm":"10k","extra":"","volume":"none"},{"disk_index":"0","size_type":"2.5","type":"SAS","rpm":"10k","extra":"","volume":"none"},{"disk_index":"0","size_type":"2.5","type":"SAS","rpm":"10k","extra":"","volume":"none"},{"disk_index":"0","size_type":"2.5","type":"SAS","rpm":"10k","extra":"","volume":"none"}]],"back":[[{"disk_index":"0","size_type":"2.5","type":"SAS","rpm":"10k","extra":"","volume":"none"},{"disk_index":"0","size_type":"2.5","type":"SAS","rpm":"10k","extra":"","volume":"none"},{"disk_index":"0","size_type":"2.5","type":"SAS","rpm":"10k","extra":"","volume":"none"},{"disk_index":"0","size_type":"2.5","type":"SAS","rpm":"10k","extra":"","volume":"none"}],[],[],[],[],[{"disk_index":"0","size_type":"2.5","type":"SAS","rpm":"10k","extra":"","volume":"none"},{"disk_index":"0","size_type":"2.5","type":"SAS","rpm":"10k","extra":"","volume":"0"}],[],[],[],[{"disk_index":"0","size_type":"2.5","type":"SAS","rpm":"10k","extra":"","volume":"none"},{"disk_index":"0","size_type":"2.5","type":"SAS","rpm":"10k","extra":"","volume":"none"},{"disk_index":"0","size_type":"2.5","type":"SAS","rpm":"10k","extra":"","volume":"none"}]],"volume":[{"index":0,"name":"Volume(0)","type":"raid0","color":"#28d34c"}]}  
             }
         );
+
+        //Here is how to call the final data;
+
+        $("#getData").click(function() {
+           var data = $(".host_disk_wizard_container").hostDisk("thirdStep");    
+           console.log(data);
+        });
+
 
     });
     
