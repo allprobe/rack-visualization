@@ -823,6 +823,7 @@ $(function () {
                                 '<option value="SAT">SAT</option>' +
                                 '<option value="SATA">SATA</option>' +
                                 '<option value="SSD">SSD</option>' +
+                                '<option value="SAS">SAS</option>' +
                             '</select>' +
                         '</div>' +
 
