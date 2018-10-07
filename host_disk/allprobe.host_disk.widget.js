@@ -561,18 +561,12 @@ $(function () {
                                 '<div class="title">Disks configuration</div>' +
                             '</div>' +
                             '<div class="info">' +
-                                'Please select a row to add disks. When you select a row, there appears a button to add disks. Select disks to change its parameters.'+
+                                'Please select a front row to add disks. When you select a row, there appears a button to add disks. Select disks to change its parameters.'+
                             '</div>' +
                                 '<div class="field-container">' +
                                     '<div class="fields">' +
 
-                                        
-                                        
-                                            '<div class=" divide disk-section-front"></div>' +
-                                        
-                                        
-                                            '<div class="divide disk-section-back"></div>' +
-                                        
+                                        '<div class=" divide disk-section-front"></div>' +
                                         
                                     '</div>' +
                                     '<div class="action-col">' +
@@ -582,11 +576,11 @@ $(function () {
                                 
                                 '<div class="button-container">' +
                                     '<button id="diskStepPrevious" type="button" class="btn btn-primary previous">Previous</button>' +
-                                    '<button id="diskStepNext" type="button" class="btn btn-primary next">Next</button>' +
+                                    '<button id="frontDiskStepNext" type="button" class="btn btn-primary next">Next</button>' +
                                 '</div>' +
                                 
                             '</div>';
-
+    
             this.element.html(this.diskStepHtml);
 
             this.showRows();
@@ -594,30 +588,17 @@ $(function () {
             this.showDisks();
 
             this.element.find('#diskStepPrevious').click(this.diskStepPreviousHandler.bind(this));
-            this.element.find('#diskStepNext').click(this.diskStepNextHandler.bind(this));
+            this.element.find('#frontDiskStepNext').click(this.FrontDiskStepNextHandler.bind(this));
         },
-
+        
         diskStepPreviousHandler: function(event) {
             this.createVolume();
         },
 
-        diskStepNextHandler: function() {
-
-            this.thirdStep();
-        },
-
-        thirdStep: function() {
-
-            this.element.html(this.thirdStepHtml);
-
-            var finalData = {
-                "front": this.data.front,
-                "back": this.data.back,
-                "volume": this.data.volume,
-            };
-            console.log(JSON.stringify(finalData));
-            //alert(JSON.stringify(finalData));
-            return finalData;
+        FrontDiskStepNextHandler: function() {
+            console.log("hoya");
+            this.diskStepBack();
+            //this.thirdStep();
         },
 
         showRows: function() {
@@ -631,11 +612,6 @@ $(function () {
             var html = this.generateRowHtml(event, "front");
             $('.disk-section-front').html('Front: <div class="disk-container disk-container-front">' + html + '</div>');
 
-            if( this.data.noOfBackRows > 0) {
-                event.target.value = this.data.noOfBackRows;
-                html = this.generateRowHtml(event, "back");
-                $('.disk-section-back').html('Back: <div class="disk-container disk-container-back">' + html + '</div>');
-            }
         },
 
         showDisks: function() {
@@ -657,6 +633,89 @@ $(function () {
                 }
             });
 
+        },
+
+        diskStepBack: function() {
+            console.log("okay");
+            this.currentStep = 3;
+            
+                this.diskStepHtmlBack = '<div class="disk-step-container">' + 
+                    '<div class="title-row">' +
+                        '<div class="title">Disks configuration</div>' +
+                    '</div>' +
+                    '<div class="info">' +
+                        'Please select a back row to add disks. When you select a row, there appears a button to add disks. Select disks to change its parameters.'+
+                    '</div>' +
+                        '<div class="field-container">' +
+                            '<div class="fields">' +
+
+                                '<div class=" divide disk-section-back"></div>' +
+                                    
+                            '</div>' +
+                            '<div class="action-col">' +
+                                '<div id="rowSelectedHtmlRef" class="rowSelected diskSelected createVolumeSelected"></div>' +
+                            '</div>' +
+                        '</div>' +
+                        
+                        '<div class="button-container">' +
+                            '<button id="BackDiskStepPrevious" type="button" class="btn btn-primary previous">Previous</button>' +
+                            '<button id="BackDiskStepNext" type="button" class="btn btn-primary next">Next</button>' +
+                        '</div>' +
+                        
+                    '</div>';
+               
+
+            this.element.html(this.diskStepHtmlBack);
+
+            this.showBackRows();
+            this.addBackRowClickHandlers();
+            this.showBackDisks();
+
+            this.element.find('#BackDiskStepPrevious').click(this.BackDiskStepPreviousHandler.bind(this));
+            this.element.find('#BackDiskStepNext').click(this.BackDiskStepNextHandler.bind(this));
+        },
+
+        BackDiskStepPreviousHandler: function() {
+            this.diskStep();
+        },
+
+        BackDiskStepNextHandler: function() {
+            this.thirdStep();
+        },
+        
+        thirdStep: function() {
+
+            this.element.html(this.thirdStepHtml);
+
+            var finalData = {
+                "front": this.data.front,
+                "back": this.data.back,
+                "volume": this.data.volume,
+            };
+            console.log(JSON.stringify(finalData));
+            //alert(JSON.stringify(finalData));
+            return finalData;
+        },
+
+        showBackRows: function() {
+            
+            var event = {
+                target: {
+                    value: this.data.noOfFrontRows
+                }
+            };
+            
+            if( this.data.noOfBackRows > 0) {
+                event.target.value = this.data.noOfBackRows;
+                html = this.generateRowHtml(event, "back");
+                $('.disk-section-back').html('Back: <div class="disk-container disk-container-back">' + html + '</div>');
+            }
+        },
+
+        showBackDisks: function() {
+            
+            var that = this;
+            
             this.data.back.forEach(function(arValue, index) {
                 
                 if(arValue !== null && arValue.length > 0) {
@@ -683,6 +742,11 @@ $(function () {
                 });
             });
 
+        },
+
+        addBackRowClickHandlers: function() {
+
+            var that = this;
             $('.disk-section-back').find('.disk').each(function(index, disk) {
                 $(disk).click(function(event) {
                     that.rowClickHandler(this);
@@ -826,7 +890,7 @@ $(function () {
                                 '<option value="SAS">SAS</option>' +
                             '</select>' +
                         '</div>' +
-
+                                                            
                         '<div class="item-left">Rpm:</div>' +
                         '<div class="item-right"> '+
                             '<select id="rpm_select" name="rpm">' +
