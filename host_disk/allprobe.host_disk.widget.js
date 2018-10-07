@@ -253,7 +253,7 @@ $(function () {
 
             if(this.data.noOfFrontRows < this.data.front.length) {
                 diff = this.data.front.length - this.data.noOfFrontRows;
-                this.data.front.splice(-1, diff);
+                this.data.front.splice(-1 * diff, diff);
             }
         },
 
@@ -264,11 +264,13 @@ $(function () {
                 for(var i = 0; i < diff; i++) {
                     this.data.back.push([]);
                 }
+                console.log("Okay", this.data.back);
             } 
 
             if(this.data.noOfBackRows < this.data.back.length) {
+                
                 diff = this.data.back.length - this.data.noOfBackRows;
-                this.data.back.splice(-1, diff);
+                this.data.back.splice(-1 * diff, diff);
             }
 
         },
