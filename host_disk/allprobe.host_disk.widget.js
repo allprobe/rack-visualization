@@ -603,7 +603,12 @@ $(function () {
 
         FrontDiskStepNextHandler: function() {
             console.log("hoya");
-            this.diskStepBack();
+            if(this.data.noOfBackRows > 0) {
+                this.diskStepBack();
+            } else {
+                this.thirdStep();
+            }
+            
             //this.thirdStep();
         },
 
