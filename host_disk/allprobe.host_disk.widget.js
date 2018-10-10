@@ -170,8 +170,12 @@ $(function () {
             var value = parseInt(event.target.value);
             if(value > 12) {
                 alert("Please enter a value less than 13");
-                $(event.currentTarget).val(parseInt(value / 10));
-                return 0;
+                value = parseInt(value / 10);
+                if(value > 12) {
+                    value = parseInt(value.toString()[0]);
+                }
+                $(event.currentTarget).val(value);
+                //return 0;
             }
             var html = this.generateRowHtml(event, face);
 
@@ -243,7 +247,7 @@ $(function () {
         },
 
         updateForChangeInFrontRows: function() {
-            
+            var diff;
             if(this.data.noOfFrontRows > this.data.front.length) {
                 diff = this.data.noOfFrontRows - this.data.front.length;
                 for(var i = 0; i < diff; i++) {
@@ -258,7 +262,7 @@ $(function () {
         },
 
         updateForChangeInBackRows: function() {
-
+            var diff;
             if(this.data.noOfBackRows > this.data.back.length) {
                 diff = this.data.noOfBackRows - this.data.back.length;
                 for(var i = 0; i < diff; i++) {
@@ -541,7 +545,7 @@ $(function () {
         getVolumesOption: function() {
 
             var returnHtml = '<option value="none">none</option>';
-            this.data.volume.forEach((element, index) => {
+            this.data.volume.forEach(function(element, index) {
                 returnHtml = returnHtml + '<option value='+ element.index+'>'+ element.name +'</option>';
             });
             
@@ -695,7 +699,7 @@ $(function () {
                 "volume": this.data.volume,
             };
             console.log(JSON.stringify(finalData));
-            //alert(JSON.stringify(finalData));
+            alert(JSON.stringify(finalData));
             return finalData;
         },
 
