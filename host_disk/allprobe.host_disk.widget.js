@@ -13,10 +13,10 @@ $(function () {
         },
 
         initialize: function() {
-            
+
             this.currentStep = 1;
             this.editVolumeMode = false;
-            
+
             this.data = {
                 noOfFrontRows: null,
                 noOfBackRows: null,
@@ -26,7 +26,7 @@ $(function () {
                 currentlySelectedRowIndex: null,
                 currentlySelectedRowReference: null,
                 currentlySelectedDiskIndex: null,
-                currentlySelectedDiskReference: null,
+                currentlySelectedDiskReference: null
             };
 
             if(this.options.data) {
@@ -35,15 +35,15 @@ $(function () {
 
                 if(diskData.front) {
                     diskData.front.forEach(function(row, index) {
-                    
+
                         if(row === null) {
                             diskData.front[index] = [];
                         }
                     });
                     this.data.noOfFrontRows = diskData.front.length;
-                    this.data.front = diskData.front; 
+                    this.data.front = diskData.front;
                 }
-                
+
                 if(diskData.back) {
                     diskData.back.forEach(function(row, index) {
                         if(row === null) {
@@ -51,20 +51,20 @@ $(function () {
                         }
                     });
                     this.data.noOfBackRows = diskData.back.length;
-                    this.data.back = diskData.back;    
+                    this.data.back = diskData.back;
                 }
-                
+
                 if(diskData.volume) {
                     this.data.volume = diskData.volume;
                 }
-                
+
                 console.log(this.data);
             }
-            
+
         },
 
-        /** 
-         * First Step 
+        /**
+         * First Step
         */
 
         firstStep: function() {
@@ -76,7 +76,7 @@ $(function () {
                                 '<div class=" title">Host disk front/back configuration</div>' +
                             '</div>' +
                             '<div class="info">'+
-                                'Welcome to Host Disk configuration wizard. Please input number of front and back discs you want in the below text boxes. Notice they are auto generated in the right side. Click next to move on to the next section.' +
+                                'Host Disks / Volumes configuration wizard. Please input the number of front and back disk rows in the below text boxes. Notice they are auto generated in the right side. Click next to move on to the next section.' +
                             '</div>' +
                             '<div class="field-container">' +
                                 '<div class=" fields">' +
@@ -98,17 +98,17 @@ $(function () {
             this.element.html(this.firstStepHtml);
 
             this.element.find('#firstStepNext').click(this.firstStepNextHandler.bind(this));
-            this.element.find('#frontRowValue').keyup(this.dynamicRows.bind(this));
-            this.element.find('#backRowValue').keyup(this.dynamicRows.bind(this));
-            
+            this.element.find('#frontRowValue').click(this.dynamicRows.bind(this));
+            this.element.find('#backRowValue').click(this.dynamicRows.bind(this));
+
             if(this.data.front === null && this.data.back === null) {
                 console.log("Here I am ");
                 this.insertDefaultValues();
             }
-            
+
 
             if( this.data !== null) {
-                
+
                 var event;
                 if(this.data.noOfFrontRows !== null) {
                     console.log("hey js", this.data.noOfFrontRows);
@@ -132,7 +132,7 @@ $(function () {
                     $('#backRowValue').val(this.data.noOfBackRows);
                     this.dynamicRows(event, "back");
                 }
-                
+
             }
         },
 
@@ -142,31 +142,31 @@ $(function () {
         },
 
         insertDefaultValues: function() {
-            
+
             var event = {
                 target: {
                     value: 1,
-                    id: "frontRowValue",
+                    id: "frontRowValue"
                 }
             };
 
             this.element.find('#frontRowValue').val(1);
             this.dynamicRows(event, "front");
-            
+
             event = {
                 target: {
                     value: 0,
-                    id: "backRowValue",
+                    id: "backRowValue"
                 }
             };
 
             this.element.find('#backRowValue').val(0);
             this.dynamicRows(event, "back");
-        
+
         },
 
         dynamicRows: function(event, face) {
-            
+
             var value = parseInt(event.target.value);
             if(value > 12) {
                 alert("Please enter a value less than 13");
@@ -180,19 +180,19 @@ $(function () {
             var html = this.generateRowHtml(event, face);
 
             if( event.target.id === "frontRowValue") {
-                
+
                 this.data.noOfFrontRows = value;
-                
+
                 html = '<label>Front:</label> <div class="disk-container">' + html + '</div>';
                 if(value === 0 || isNaN(value)) {
                     $('.graphics-container-front').html("");
                     return;
                 }
                 $('.graphics-container-front').html(html);
-            } 
-            
+            }
+
             if( event.target.id === "backRowValue") {
-                
+
                 this.data.noOfBackRows = value;
 
                 html = '<label>Back:</label> <div class="disk-container">' + html + '</div>';
@@ -201,12 +201,12 @@ $(function () {
                     return;
                 }
                 $('.graphics-container-back').html(html);
-            }     
-            
+            }
+
         },
 
         generateRowHtml: function(event, face) {
-            
+
             var value = parseInt(event.target.value);
             if(value === 0) {
                 return "";
@@ -223,14 +223,14 @@ $(function () {
         },
 
         firstStepNextHandler: function(event) {
-            
+
             if(this.data.front === null && this.data.back === null) {
                 var length = ( this.data.noOfFrontRows - 1 >= 0 ) ? this.data.noOfFrontRows - 1 : 0;
 
                 this.data.front = Array(length);
 
                 length = ( this.data.noOfBackRows - 1 <= 0 ) ? 0 : this.data.noOfBackRows - 1 ;
-            
+
                 this.data.back = Array(length);
                 this.createVolume();
                 return;
@@ -243,7 +243,7 @@ $(function () {
 
             this.createVolume();
             return;
-            
+
         },
 
         updateForChangeInFrontRows: function() {
@@ -253,7 +253,7 @@ $(function () {
                 for(var i = 0; i < diff; i++) {
                     this.data.front.push([]);
                 }
-            } 
+            }
 
             if(this.data.noOfFrontRows < this.data.front.length) {
                 diff = this.data.front.length - this.data.noOfFrontRows;
@@ -269,10 +269,10 @@ $(function () {
                     this.data.back.push([]);
                 }
                 console.log("Okay", this.data.back);
-            } 
+            }
 
             if(this.data.noOfBackRows < this.data.back.length) {
-                
+
                 diff = this.data.back.length - this.data.noOfBackRows;
                 this.data.back.splice(-1 * diff, diff);
             }
@@ -281,8 +281,8 @@ $(function () {
 
         /* End of First step */
 
-        /** Second step which creates Volume 
-         * 
+        /** Second step which creates Volume
+         *
         */
         createVolume: function() {
 
@@ -300,12 +300,12 @@ $(function () {
                                         this.addVolumeHTML +
                                     '</div>' +
                                     '<div class="action-col">' +
-                                        '<select size="10" class="select-box-volume" id="volumeSelector">' + 
+                                        '<select size="10" class="select-box-volume" id="volumeSelector">' +
 
                                         '</select>' +
                                     '</div>' +
                                 '</div>' +
-                                
+
                                 '<div class="button-container create-volume-button-container">' +
                                     '<button id="createVolumePrevious" type="button" class="btn btn-primary previous">Previous</button>' +
                                     '<button id="createVolumeNext" type="button" class="btn btn-primary next">Next</button>' +
@@ -338,7 +338,7 @@ $(function () {
             index: 0,
             name: "",
             type: 'none',
-            color: '#d30219',
+            color: '#d30219'
         },
 
         addVolumeHTML: '<div class="col disk-editing edit-disk-values volume-val">' +
@@ -365,7 +365,7 @@ $(function () {
                             '<div class="item-right">' +
                                 '<button id="doneVolume" type="button" class="btn btn-primary">Create Volume</button>' +
                             '</div>' +
-                        
+
                         '</div>',
 
         editVolumeHTML: '<div class="col disk-editing edit-disk-values edit-volume-val">' +
@@ -395,7 +395,7 @@ $(function () {
                             '<button id="updateVolume" type="button" class="btn btn-primary">Update</button>' +
                             '<button id="deleteVolume" type="button" class="btn btn-primary">Delete</button>' +
                         '</div>' +
-                    
+
                     '</div>',
 
         volumeHTML: function() {
@@ -410,7 +410,7 @@ $(function () {
             return this.data.volume[this.data.volume.length - 1];
 
         },
-            
+
         volumeSelectorChange: function() {
             var that = this;
             $('#volumeSelector').change(function(evt) {
@@ -423,22 +423,22 @@ $(function () {
                 $('#edit_volume_color').val(selectedVolume.color);
             });
         },
-            
+
         autoSaveCurrentVolume: function() {
 
             var that = this;
-            
+
             $('#doneVolume').click(function(event) {
 
                 var volume = that.volumeHTML();
                 $('#volumeSelector')
                     .append("<option value=" + volume.index + ">"+ volume.name +"</option>");
                 that.clearVolumeFields();
-                
-                
+
+
             });
         },
-            
+
         activateEditVolumeMode: function() {
 
             var exist = $('.fields').find('div.volume-val').length;
@@ -456,7 +456,7 @@ $(function () {
             var selectedVolume = this.data.volume[volumeIndex];
             return selectedVolume;
         },
-            
+
         getCurrentlySelectedVolumeIndex: function() {
 
             var volumeIndex = $('#volumeSelector').val();
@@ -465,7 +465,7 @@ $(function () {
 
         addEditVolumeEvents: function() {
             var that = this;
-            
+
             $('#updateVolume').click(function(evt) {
                 that.updateVolume();
                 that.discardVolume();
@@ -480,7 +480,7 @@ $(function () {
             });
 
         },
-            
+
         deleteVolume: function() {
 
             var index = this.getCurrentlySelectedVolumeIndex();
@@ -490,7 +490,7 @@ $(function () {
             $('#volumeSelector').empty();
             this.reWorkVolumeDetails();
             this.discardVolume();
-            
+
         },
 
         removeVolumeReferenceFromDisks: function(volumeIndexToBeDeleted, face) {
@@ -504,10 +504,10 @@ $(function () {
                 });
             });
         },
-        
+
 
         reWorkVolumeDetails: function() {
-            
+
             this.data.volume.forEach(function(volume, index) {
                 console.log(index);
                 volume.index = index;
@@ -516,7 +516,7 @@ $(function () {
 
             });
         },
-            
+
         discardVolume: function() {
 
             $('.fields').html(this.addVolumeHTML);
@@ -526,32 +526,32 @@ $(function () {
         },
 
         updateVolume: function() {
-            
+
             var selectedVolume = this.getCurrentlySelectedVolume();
             selectedVolume.name = $('#edit_volume_name').val();
             $('#volumeSelector option:selected').text(selectedVolume.name);
             selectedVolume.type = $('#edit_volume_type_select').val();
             selectedVolume.color = $('#edit_volume_color').val();
-            
+
         },
-            
+
         clearVolumeFields: function() {
             $('#volume_name').val("");
             $('#volume_type_select').val("none");
             $('#volume_color').val('#d30219');
 
         },
-        
+
         getVolumesOption: function() {
 
             var returnHtml = '<option value="none">none</option>';
             this.data.volume.forEach(function(element, index) {
                 returnHtml = returnHtml + '<option value='+ element.index+'>'+ element.name +'</option>';
             });
-            
+
             return returnHtml;
         },
-            
+
         /**
          * End of Volume Step
          */
@@ -562,31 +562,31 @@ $(function () {
         diskStep: function() {
 
             this.currentStep = 2;
-            this.diskStepHtml = '<div class="disk-step-container">' + 
+            this.diskStepHtml = '<div class="disk-step-container">' +
                             '<div class="title-row">' +
                                 '<div class="title">Disks configuration</div>' +
                             '</div>' +
                             '<div class="info">' +
-                                'Please select a front row to add disks. When you select a row, there appears a button to add disks. Select disks to change its parameters.'+
+                                'Please select a front row to add disks. When you select a row, a new button to add disks will appear. Select disks to change its parameters.'+
                             '</div>' +
                                 '<div class="field-container">' +
                                     '<div class="fields">' +
 
                                         '<div class=" divide disk-section-front"></div>' +
-                                        
+
                                     '</div>' +
                                     '<div class="action-col">' +
                                         '<div id="rowSelectedHtmlRef" class="rowSelected diskSelected createVolumeSelected"></div>' +
                                     '</div>' +
                                 '</div>' +
-                                
+
                                 '<div class="button-container">' +
                                     '<button id="diskStepPrevious" type="button" class="btn btn-primary previous">Previous</button>' +
                                     '<button id="frontDiskStepNext" type="button" class="btn btn-primary next">Next</button>' +
                                 '</div>' +
-                                
+
                             '</div>';
-    
+
             this.element.html(this.diskStepHtml);
 
             this.showRows();
@@ -596,51 +596,51 @@ $(function () {
             this.element.find('#diskStepPrevious').click(this.diskStepPreviousHandler.bind(this));
             this.element.find('#frontDiskStepNext').click(this.FrontDiskStepNextHandler.bind(this));
         },
-        
+
         diskStepPreviousHandler: function(event) {
             this.createVolume();
         },
 
         FrontDiskStepNextHandler: function() {
+            
             console.log("hoya");
             if(this.data.noOfBackRows > 0) {
                 this.diskStepBack();
             } else {
                 this.thirdStep();
             }
-            
             //this.thirdStep();
         },
 
         showRows: function() {
-            
+
             var event = {
                 target: {
                     value: this.data.noOfFrontRows
                 }
             };
-            
+
             var html = this.generateRowHtml(event, "front");
             $('.disk-section-front').html('Front: <div class="disk-container disk-container-front">' + html + '</div>');
 
         },
 
         showDisks: function() {
-            
+
             var that = this;
             this.data.front.forEach(function(arValue, index) {
-                
+
                 if(arValue !== null && arValue.length > 0) {
                     $($('.disk-section-front').find('.disk')[index]).click();
                     arValue.forEach(function(val, index) {
                         var DH = that.addDisk(true, index);
                         if(val.volume !== 'none') {
-                            
+
                             volumeColor = that.data.volume[val.volume].color;
                             $(DH).css('background-color', volumeColor);
-                            
+
                         }
-                    }); 
+                    });
                 }
             });
 
@@ -649,32 +649,32 @@ $(function () {
         diskStepBack: function() {
             console.log("okay");
             this.currentStep = 3;
-            
-                this.diskStepHtmlBack = '<div class="disk-step-container">' + 
+
+                this.diskStepHtmlBack = '<div class="disk-step-container">' +
                     '<div class="title-row">' +
                         '<div class="title">Disks configuration</div>' +
                     '</div>' +
                     '<div class="info">' +
-                        'Please select a back row to add disks. When you select a row, there appears a button to add disks. Select disks to change its parameters.'+
+                        'Please select a front row to add disks. When you select a row, a new button to add disks will appear. Select disks to change its parameters.'+
                     '</div>' +
                         '<div class="field-container">' +
                             '<div class="fields">' +
 
                                 '<div class=" divide disk-section-back"></div>' +
-                                    
+
                             '</div>' +
                             '<div class="action-col">' +
                                 '<div id="rowSelectedHtmlRef" class="rowSelected diskSelected createVolumeSelected"></div>' +
                             '</div>' +
                         '</div>' +
-                        
+
                         '<div class="button-container">' +
                             '<button id="BackDiskStepPrevious" type="button" class="btn btn-primary previous">Previous</button>' +
                             '<button id="BackDiskStepNext" type="button" class="btn btn-primary next">Next</button>' +
                         '</div>' +
-                        
+
                     '</div>';
-               
+
 
             this.element.html(this.diskStepHtmlBack);
 
@@ -693,7 +693,7 @@ $(function () {
         BackDiskStepNextHandler: function() {
             this.thirdStep();
         },
-        
+
         thirdStep: function() {
 
             this.element.html(this.thirdStepHtml);
@@ -701,21 +701,22 @@ $(function () {
             var finalData = {
                 "front": this.data.front,
                 "back": this.data.back,
-                "volume": this.data.volume,
+                "volume": this.data.volume
             };
+
             console.log(JSON.stringify(finalData));
-            alert(JSON.stringify(finalData));
-            return finalData;
+            sendHDsForm(JSON.stringify(finalData));
+            return JSON.stringify(finalData);
         },
 
         showBackRows: function() {
-            
+
             var event = {
                 target: {
                     value: this.data.noOfFrontRows
                 }
             };
-            
+
             if( this.data.noOfBackRows > 0) {
                 event.target.value = this.data.noOfBackRows;
                 html = this.generateRowHtml(event, "back");
@@ -724,22 +725,22 @@ $(function () {
         },
 
         showBackDisks: function() {
-            
+
             var that = this;
-            
+
             this.data.back.forEach(function(arValue, index) {
-                
+
                 if(arValue !== null && arValue.length > 0) {
                     $($('.disk-section-back').find('.disk')[index]).click();
                     arValue.forEach(function(val, index) {
                         var DH = that.addDisk(true, index);
                         if(val.volume !== 'none') {
-                            
+
                             volumeColor = that.data.volume[val.volume].color;
                             $(DH).css('background-color', volumeColor);
-                            
+
                         }
-                    }); 
+                    });
                 }
             });
         },
@@ -766,67 +767,67 @@ $(function () {
         },
 
         rowClickHandler: function(row) {
-            
+
             this.data.currentlySelectedRowReference = row;
             this.data.currentlySelectedRowIndex = parseInt($(row).attr("index"));
-            
+
             $('.active-row').removeClass('active-row');
-            
+
             $(row).addClass("active-row");
 
             if(! $(".row-selected-button-container")[0] ) {
                 console.log("This is the place");
                 $('.rowSelected').html(this.rowSelectedHtml);
                 this.addDiskHandler();
-            }            
+            }
         },
-        
+
         rowSelectedHtml: '<div class="row-selected-button-container"><button type="button" class="btn add-disk-button btn-success">Add Disk</button></div>',
-        
-        
+
+
         diskHTML: '<div class="single-disk"></div>',
 
-        
+
         addDiskHandler: function() {
-            
+
             $('.add-disk-button').click(this.addDisk.bind(this, false, null));
         },
-        
+
         defaultDisk: {
-            'disk_index' : '0', 
-            'size_type': '2.5', 
-            'type': 'SAS', 
+            'disk_index' : '0',
+            'size_type': '2.5',
+            'type': 'SAS',
             'rpm': '10k',
             'extra' : '',
-            'volume': 'none',
+            'volume': 'none'
         },
 
         addDisk: function(automatic, automaticIndex) {
 
             var that = this;
             if( $(this.data.currentlySelectedRowReference).find(".single-disk").length <= 23 ) {
-                
+
                 var index = 0;
 
                 var selector = $(this.data.currentlySelectedRowReference).attr("face");
-                
+
                 if( typeof(this.data[selector][this.data.currentlySelectedRowIndex]) === 'undefined') {
                     this.data[selector][this.data.currentlySelectedRowIndex] = [];
                 }
 
                 if(! automatic) {
-                    
+
                     this.data[selector][this.data.currentlySelectedRowIndex].push($.extend({}, this.defaultDisk));
                     index = this.data[selector][this.data.currentlySelectedRowIndex].length - 1;
                 } else {
                     index = automaticIndex;
                 }
                console.log(this.data.back, this.data.front);
-                
+
 
                 var diskHtml = $(this.diskHTML).attr("index", index)
                     .click(function(event) {
-                        
+
                         event.stopPropagation();
                         that.editDiskValues(this);
                     });
@@ -834,9 +835,9 @@ $(function () {
                 $(this.data.currentlySelectedRowReference)
                     .append(diskHtml);
 
-                return diskHtml;    
-                
-            }  
+                return diskHtml;
+
+            }
         },
 
         getFace: function() {
@@ -852,7 +853,7 @@ $(function () {
         },
 
         editDiskValues: function(disk) {
-            
+
             $('.active-disk').removeClass('active-disk');
             $(disk).addClass('active-disk');
 
@@ -881,11 +882,11 @@ $(function () {
         },
 
         editDiskHtml: '<div class="col disk-editing edit-disk-values">'+
-                        
+
                         '<div class="item-left">Disk Index</div>' +
                         '<div class="item-right"><input id="disk_index" min="0" type="number" /></div>' +
-                        
-                        '<div class="item-left">Size:</div>' +
+
+                        '<div class="item-left">Inch:</div>' +
                         '<div class="item-right"> '+
                             '<select id="size_type_select" name="size_type">' +
                                 '<option value="2.5">2.5</option>' +
@@ -901,7 +902,12 @@ $(function () {
                                 '<option value="SAS">SAS</option>' +
                             '</select>' +
                         '</div>' +
-                                                            
+
+                        '<div class="item-left">Size:</div>' +
+                        '<div class="item-right"> '+
+                            '<input class="gb-input" id="size_gb_input" type="number" /> <label class="gb-label">GB</label>' +
+                        '</div>' +
+
                         '<div class="item-left">Rpm:</div>' +
                         '<div class="item-right"> '+
                             '<select id="rpm_select" name="rpm">' +
@@ -913,7 +919,7 @@ $(function () {
 
                         '<div class="item-left-special">Extra:</div>' +
                         '<div class="item-right-special"><textarea id="extra_text"></textarea></div>' +
-                        
+
                         '<div class="item-left">Volume:</div>' +
                         '<div class="item-right"> '+
                             '<select id="volume_select" name="volume">replace_with_options</select>' +
@@ -924,13 +930,14 @@ $(function () {
                             '<button id="updateSelectedDisk" type="button" class="btn btn-primary">Update</button>' +
                         '</div>' +
                     '</div>',
-        
-        
+
+
         applyValues: function(values) {
-            
+
             $("#disk_index").val(parseInt(values.disk_index));
             $("#size_type_select option[value='"+  values.size_type +"']").attr("selected", "selected");
             $("#disk_type_select option[value='"+  values.type +"']").attr("selected", "selected");
+            $("#size_gb_input").val(parseInt(values.size_gb_input));
             $("#rpm_select option[value='"+  values.rpm +"']").attr("selected", "selected");
             $("#extra_text").val(values.extra);
             $("#volume_select option[value='"+  values.volume +"']").attr("selected", "selected");
@@ -962,6 +969,16 @@ $(function () {
                 disk.type = event.target.value;
             });
 
+            $("#size_gb_input").keyup(function(event) {
+                var disk = that.getCurrentDisk();
+                disk.size_gb_input = event.target.value;
+            });
+
+            $("#size_gb_input").change(function(event) {
+                var disk = that.getCurrentDisk();
+                disk.size_gb_input = event.target.value;
+            });
+
             $("#rpm_select").change(function(event) {
                 var disk = that.getCurrentDisk();
                 disk.rpm = event.target.value;
@@ -973,17 +990,17 @@ $(function () {
             });
 
             $("#volume_select").change(function(event) {
-                
+
                 var disk = that.getCurrentDisk();
                 disk.volume = event.target.value;
-                
+
                 if(disk.volume === 'none') {
                     $(that.data.currentlySelectedDiskReference).css('background-color', "burlywood");
                 } else {
                     volumeColor = that.data.volume[disk.volume].color;
                     $(that.data.currentlySelectedDiskReference).css('background-color', volumeColor);
                 }
-                
+
             });
 
             $("#deleteSelectedDisk").click(function(event) {
@@ -994,7 +1011,7 @@ $(function () {
 
                 that.data[face][rowIndex].splice(diskIndex, 1);
                 $(that.data.currentlySelectedDiskReference).remove();
-                
+
                 $.each($('.active-row').find('.single-disk'), function(index, disk) {
                     $(disk).attr("index", index);
                 });
@@ -1010,6 +1027,6 @@ $(function () {
         }
 
 
-        
+
     });
 });
