@@ -4,3 +4,5 @@ Json data gives the info about rack servers. The code is helping a user to bette
 
 Initially, we developed the rack visualization Javascript extension to visualize racks & DataCenters.
 
+
+![](https://www.allprobe.com/img/screenshots/rack-2.png "Allprobe Rack visualization")
